@@ -1,0 +1,3 @@
+[submodule "keycloack-mainflux"]
+	path = keycloack-mainflux
+	url = http://git.zeinetsse.com:10080/r.krikbaev/keycloack-mainflux.git
