@@ -1,0 +1,34 @@
+# model #1
+model#1:
+  enabled: True
+  delay: 5
+  model: "ncn"
+  worker:
+    worker_num: "worker1"
+    query_parametrs:
+      - "value1"
+      - "value2"
+    service_keys: "1:data"
+    nats_address: "134.209.240.215:1884"    # mainflux.zeinetsse.com:1884
+    tf_address: "68.183.219.163:8500"       # tf.zeinetsse.com:8500
+    thing_id: "01e3e98c-8ec0-4960-9c27-7ef81e8ce2a4"
+    thing_ext_id: "8c:85:90:45:c5:87"
+    thing_key: ""
+    channel_id: ""
+# model #2
+model#2:
+  enabled: True
+  delay: 5
+  model: "autoregression"
+  worker:
+    worker_num: "worker1"
+    query_parametrs:
+      - "value1"
+      - "value2"
+    service_keys: "1:data"
+    nats_address: "134.209.240.215:1884"    # mainflux.zeinetsse.com:1884
+    tf_address: "68.183.219.163:8500"       # tf.zeinetsse.com:8500
+    thing_id: "01e3e98c-8ec0-4960-9c27-7ef81e8ce2a4"
+    thing_ext_id: "8c:85:90:45:c5:87"
+    thing_key: ""
+    channel_id: ""
