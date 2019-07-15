@@ -178,41 +178,41 @@ services:
     networks:
       - mainflux-base-net
 
-#   ws-adapter:
-#     image: mainflux/ws:latest
-#     container_name: mainflux-ws
-#     depends_on:
-#       - things
-#       - nats
-#     restart: on-failure
-#     environment:
-#       MF_WS_ADAPTER_LOG_LEVEL: debug
-#       MF_WS_ADAPTER_PORT: 8186
-#       MF_NATS_URL: nats://nats:4222
-#       MF_THINGS_URL: things:8183
-#     ports:
-#       - 8186:8186
-#     networks:
-#       - mainflux-base-net
+  ws-adapter:
+    image: mainflux/ws:latest
+    container_name: mainflux-ws
+    depends_on:
+      - things
+      - nats
+    restart: on-failure
+    environment:
+      MF_WS_ADAPTER_LOG_LEVEL: debug
+      MF_WS_ADAPTER_PORT: 8186
+      MF_NATS_URL: nats://nats:4222
+      MF_THINGS_URL: things:8183
+    ports:
+      - 8186:8186
+    networks:
+      - mainflux-base-net
 
-#   http-adapter:
-#     image: mainflux/http:latest
-#     container_name: mainflux-http
-#     depends_on:
-#       - things
-#       - nats
-#     restart: on-failure
-#     expose:
-#       - 8185
-#     environment:
-#       MF_HTTP_ADAPTER_LOG_LEVEL: debug
-#       MF_HTTP_ADAPTER_PORT: 8185
-#       MF_NATS_URL: nats://nats:4222
-#       MF_THINGS_URL: things:8183
-#     ports:
-#       - 8185:8185
-#     networks:
-#       - mainflux-base-net
+  http-adapter:
+    image: mainflux/http:latest
+    container_name: mainflux-http
+    depends_on:
+      - things
+      - nats
+    restart: on-failure
+    expose:
+      - 8185
+    environment:
+      MF_HTTP_ADAPTER_LOG_LEVEL: debug
+      MF_HTTP_ADAPTER_PORT: 8185
+      MF_NATS_URL: nats://nats:4222
+      MF_THINGS_URL: things:8183
+    ports:
+      - 8185:8185
+    networks:
+      - mainflux-base-net
 
   es-redis:
     image: redis:5.0-alpine
@@ -255,22 +255,22 @@ services:
     networks:
       - mainflux-base-net
 
-#   coap-adapter:
-#     image: mainflux/coap:latest
-#     container_name: mainflux-coap
-#     depends_on:
-#       - things
-#       - nats
-#     restart: on-failure
-#     environment:
-#       MF_COAP_ADAPTER_LOG_LEVEL: debug
-#       MF_COAP_ADAPTER_PORT: 5683
-#       MF_NATS_URL: nats://nats:4222
-#       MF_THINGS_URL: things:8183
-#     ports:
-#       - 5683:5683/udp
-#     networks:
-#       - mainflux-base-net
+  coap-adapter:
+    image: mainflux/coap:latest
+    container_name: mainflux-coap
+    depends_on:
+      - things
+      - nats
+    restart: on-failure
+    environment:
+      MF_COAP_ADAPTER_LOG_LEVEL: debug
+      MF_COAP_ADAPTER_PORT: 5683
+      MF_NATS_URL: nats://nats:4222
+      MF_THINGS_URL: things:8183
+    ports:
+      - 5683:5683/udp
+    networks:
+      - mainflux-base-net
 
   bootstrap-db:
     image: postgres:10.2-alpine
