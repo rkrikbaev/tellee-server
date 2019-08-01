@@ -1,142 +1,418 @@
-# Mainflux
+# TELLY
 
-[![build][ci-badge]][ci-url]
-[![go report card][grc-badge]][grc-url]
-[![coverage][cov-badge]][cov-url]
-[![license][license]](LICENSE)
-[![chat][gitter-badge]][gitter]
+## Mainflux
 
-![banner][banner]
+[Mainflux](https://www.mainflux.com/) - это современная, масштабируемая, безопасная облачная платформа IoT с открытым исходным кодом и без патентов, написанная на [Go](https://golang.org/doc/).
 
-Mainflux is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
+Он принимает соединения пользователя и вещи через различные сетевые протоколы (т.е. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap)), тем самым создавая плавный мост между ними. Он используется в качестве промежуточного программного обеспечения IoT для построения сложных решений IoT.
 
-It accepts user and thing connections over various network protocols (i.e. HTTP,
-MQTT, WebSocket, CoAP), thus making a seamless bridge between them. It is used as the IoT middleware
-for building complex IoT solutions.
+<ul>
+<li>Соединение протоколов (т.е. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap))</li>
+<li>[Управление устройством и обеспечение](https://mainflux.readthedocs.io/en/latest/messaging/)</li>
+<li>[Детальное управление доступом](https://mainflux.readthedocs.io/en/latest/provisioning/)</li>
+<li>[Поддержка платформ и инструментария](https://mainflux.readthedocs.io/en/latest/storage/)</li>
+<li>Развертывание на основе контейнеров с использованием [Docker](https://docs.docker.com/)</li>
+</ul>
 
-For more details, check out the [official documentation][docs].
+### HTTP
 
-Mainflux is member of the [Linux Foundation][lf] and an active contributor
-to the [EdgeX Foundry][edgex] project. It has been made with :heart: by [Mainflux company][company],
-which maintains the project and offers professional services around it.
+Representational State Transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services. Web services that conform to the REST architectural style, called RESTful Web services (RWS), provide interoperability between computer systems on the Internet. RESTful Web services allow the requesting systems to access and manipulate textual representations of Web resources by using a uniform and predefined set of stateless operations. Other kinds of Web services, such as SOAP Web services, expose their own arbitrary sets of operations.
 
-## Features
-- Multi-protocol connectivity and protocol bridging (HTTP, MQTT, WebSocket and CoAP)
-- Device management and provisioning
-- Fine-grained access control
-- Storage support (Cassandra, InfluxDB and MongoDB)
-- Platform logging and instrumentation support
-- Event sourcing
-- Container-based deployment using [Docker][docker] and [Kubernetes][kubernetes]
-- [LoRaWAN][lora] network integration
-- SDK
-- CLI
-- Small memory footprint and fast execution
-- Domain-driven design architecture, high-quality code and test coverage
+"Web resources" were first defined on the World Wide Web as documents or files identified by their URLs. However, today they have a much more generic and abstract definition that encompasses every thing or entity that can be identified, named, addressed, or handled, in any way whatsoever, on the Web. In a RESTful Web service, requests made to a resource's URI will elicit a response with a payload formatted in HTML, XML, JSON, or some other format. The response can confirm that some alteration has been made to the stored resource, and the response can provide hypertext links to other related resources or collections of resources. When HTTP is used, as is most common, the operations (HTTP methods) available are GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS and TRACE.
 
-## Install
-Before proceeding, install the following prerequisites:
+To publish message over channel, thing should send following request:
 
-- [Docker](https://docs.docker.com/install/)
-- [Docker compose](https://docs.docker.com/compose/install/)
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X POST -H "Content-Type: application/senml+json" -H "Authorization: <thing_token>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 
-Once everything is installed, execute the following commands from project root:
+Note that if you're going to use senml message format, you should always send messages as an array.
 
-```bash
-docker-compose -f docker/docker-compose.yml up -d
-```
+### MQTT Broker
 
-This will bring up all Mainflux dockers and inter-connect them in the composition.
+The counterpart of the MQTT client is the MQTT broker. The broker is at the heart of any publish/subscribe protocol. Depending on the implementation, a broker can handle up to thousands of concurrently connected MQTT clients. The broker is responsible for receiving all messages, filtering the messages, determining who is subscribed to each message, and sending the message to these subscribed clients. The broker also holds the sessions of all persisted clients, including subscriptions and missed messages (more details). Another responsibility of the broker is the authentication and authorization of clients. Usually, the broker is extensible, which facilitates custom authentication, authorization, and integration into backend systems. Integration is particularly important because the broker is frequently the component that is directly exposed on the internet, handles a lot of clients, and needs to pass messages to downstream analyzing and processing systems.
 
-## Usage
-Best way to quickstart using Mainflux is via CLI:
-```
-make cli
-./build/mainflux-cli version
-```
 
-> Mainflux CLI can also be downloaded as a tarball from [offical release page][rel]
+### MQTT
 
-If this works, head to [official documentation][docs] to understand Mainflux provisioning and messaging.
+To send and receive messages over MQTT you could use Mosquitto tools, or Paho if you want to use MQTT over WebSocket.
 
-## Documentation
-Official documentation is hosted at [Mainflux Read The Docs page][docs].
+To publish message over channel, thing should call following command:
 
-Documentation is auto-generated from Markdown files in `./docs` directory.
-If you spot an error or need for corrections, please let us know - or even better: send us a PR.
+    mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages -h localhost -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 
-Additional practical information, news and tutorials can be found on the [Mainflux blog][blog].
+To subscribe to channel, thing should call following command:
 
-## Authors
-Main architect and BDFL of Mainflux project is [@drasko][drasko].
+    mosquitto_sub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages -h localhost
 
-Additionally, [@nmarcetic][nikola] and [@janko-isidorovic][janko] assured
-overall architecture and design, while [@manuio][manu] and [@darkodraskovic][darko]
-helped with crafting initial implementation and continiusly work on the project evolutions.
+In order to pass content type as part of topic, one should append it to the end of an existing topic. Content type value should always be prefixed with `/ct/`. If you want to use standard topic such as `channels/<channel_id>/messages` with SenML content type, you should use following topic `channels/<channel_id>/messages/ct/application_senml-json`. If there is no `/ct/` prefix in the subtopic, then content type will have the default value which is `application/senml+json`. Content type will be removed from the topic under the hood. You should pass content type only when you're publishing a message. Characters like `_` and `-` in the content type will be replaced with `/` and `+` respectively.
 
-Besides them, Mainflux is constantly improved and actively
-developed by [@anovakovic01][alex], [@dusanb94][dusan], [@srados][sava],
-[@gsaleh][george], [@blokovi][iva], [@chombium][kole] and a large set of contributors.
+If you are using TLS to secure MQTT connection, `add --cafile docker/ssl/certs/ca.crt` to every command.
 
-Maintainers are listed in [MAINTAINERS](MAINTAINERS) file.
+### Bootstrap
 
-Mainflux team would like to give special thanks to [@mijicd][dejan] for his monumental work
-on designing and implementing highly improved and optimized version of the platform,
-and [@malidukica][dusanm] for his effort on implementing initial user interface.
+Bootstrapping refers to a self-starting process that is supposed to proceed without external input. Mainflux platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when: - device contains only bootstrap credentials and no Mainflux credentials - device, for any reason, fails to start a communication with the configured Mainflux services (server not responding, authentication failure, etc..). - device, for any reason, wants to update its configuration
 
-## Contributing
-Thank you for your interest in Mainflux and wish to contribute!
+Bootstrapping and provisioning are two different procedures. Provisioning refers to entities management while bootstrapping is related to entity configuration.
 
-1. Take a look at our [open issues](https://github.com/mainflux/mainflux/issues).
-2. Checkout the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.
-3. Make your changes compatible to our workflow.
+Bootstrapping procedure is the following:
 
-### We're Hiring
-If you are interested in working professionally on Mainflux,
-please head to company's [careers page][careers] or shoot us an e-mail at <careers@mainflux.com>.
+Configure device 
 
-Note that the best way to grab our attention is by sending PRs :sunglasses:.
+1) Configure device with Bootstrap service URL, an external key and external ID
 
-## Community
-- [Google group][forum]
-- [Gitter][gitter]
-- [Twitter][twitter]
+Provision Mainflux channels Optionally create Mainflux channels if they don't exist
 
-## License
-[Apache-2.0](LICENSE)
+Provision Mainflux things Optionally create Mainflux thing if it doesn't exist
 
-[banner]: https://github.com/mainflux/mainflux/blob/master/docs/img/gopherBanner.jpg
-[ci-badge]: https://semaphoreci.com/api/v1/mainflux/mainflux/branches/master/badge.svg
-[ci-url]: https://semaphoreci.com/mainflux/mainflux
-[docs]: http://mainflux.readthedocs.io
-[docker]: https://www.docker.com
-[forum]: https://groups.google.com/forum/#!forum/mainflux
-[gitter]: https://gitter.im/mainflux/mainflux?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
-[grc-badge]: https://goreportcard.com/badge/github.com/mainflux/mainflux
-[grc-url]: https://goreportcard.com/report/github.com/mainflux/mainflux
-[cov-badge]: https://codecov.io/gh/mainflux/mainflux/branch/master/graph/badge.svg
-[cov-url]: https://codecov.io/gh/mainflux/mainflux
-[license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
-[twitter]: https://twitter.com/mainflux
-[lora]: https://lora-alliance.org/
-[kubernetes]: https://kubernetes.io/
-[rel]: https://github.com/mainflux/mainflux/releases
-[careers]: https://www.mainflux.com/careers.html
-[lf]: https://www.linuxfoundation.org/
-[edgex]: https://www.edgexfoundry.org/
-[company]: https://www.mainflux.com/
-[blog]: https://medium.com/mainflux-iot-platform
-[drasko]: https://github.com/drasko
-[nikola]: https://github.com/nmarcetic
-[dejan]: https://github.com/mijicd
-[manu]: https://github.com/manuIO
-[darko]: https://github.com/darkodraskovic
-[janko]: https://github.com/janko-isidorovic
-[alex]: https://github.com/anovakovic01
-[dusan]: https://github.com/dusanb94
-[sava]: https://github.com/srados
-[george]: https://github.com/gesaleh
-[iva]: https://github.com/blokovi
-[kole]: https://github.com/chombium
-[dusanm]: https://github.com/malidukica
+Upload configuration 
+
+2) Upload configuration for the Mainflux thing
+
+Bootstrap 
+
+3) Bootstrap - send a request for the configuration
+
+Update, enable/disable, remove 
+
+4) Connect/disconnect thing from channels, update or remove configuration
+
+#### Configuration
+
+The configuration of Mainflux thing consists of three major parts:
+
+<ul>
+<li>The list of Mainflux channels the thing is connected to</li>
+<li>Custom configuration related to the specific thing</li>
+<li>Thing key and certificate data related to that thing</li>
+</ul>
+
+Also, the configuration contains an external ID and external key, which will be explained later. In order to enable the thing to start bootstrapping process, the user needs to upload a valid configuration for that specific thing. This can be done using the following HTTP request:
+
+    curl -s -S -i -X POST -H "Authorization: <user_token>" -H "Content-Type: application/json" http://localhost:8200/things/configs -d '{
+            "external_id":"09:6:0:sb:sa",
+            "thing_id": "1b9b8fae-9035-4969-a240-7fe5bdc0ed28",
+            "external_key":"key",
+            "name":"some",
+            "channels":[
+                    "c3642289-501d-4974-82f2-ecccc71b2d83",
+                    "cd4ce940-9173-43e3-86f7-f788e055eb14",
+                    "ff13ca9c-7322-4c28-a25c-4fe5c7b753fc",
+                    "c3642289-501d-4974-82f2-ecccc71b2d82"
+    ],
+            "content": "config...",
+            "client_cert": "PEM cert",
+            "client_key": "PEM client cert key",
+            "ca_cert": "PEM CA cert"
+    }'
+    
+In this example, channels field represents the list of Mainflux `channel` IDs the thing is connected to. These channels need to be provisioned before the configuration is uploaded. Field content represents custom configuration. This custom configuration contains parameters that can be used to set up the thing. It can also be empty if no additional set up is needed. Field name is human readable `name` and `thing_id` is an ID of the Mainflux thing. This field is not required. If `thing_id` is empty, corresponding Mainflux thing will be created implicitly and its ID will be sent as a part of `Location` header of the response. Fields `client_cert`, `client_key`, and `ca_cert` represent PEM or base64-encoded DER client certificate, client certificate key, and trusted CA, respectively.
+
+There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and Mainflux ID and Mainflux key are completely different concepts. External id and key are only used to authenticate a device that corresponds to the specific Mainflux thing during the bootstrapping procedure.
+
+#### Bootstrapping
+
+Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Mainflux thing. In order to fetch the configuration, the thing needs to send a bootstrapping request:
+
+    curl -s -S -i -H "Authorization: <external_key>" http://localhost:8200/things/bootstrap/<external_id>
+    
+The response body should look something like:
+
+    {
+       "mainflux_id":"7c9df5eb-d06b-4402-8c1a-df476e4394c8",
+       "mainflux_key":"86a4f870-eba4-46a0-bef9-d94db2b64392",
+       "mainflux_channels":[
+          {
+             "id":"ff13ca9c-7322-4c28-a25c-4fe5c7b753fc",
+             "name":"some channel",
+             "metadata":{
+                "operation":"someop",
+                "type":"metadata"
+             }
+          },
+          {
+             "id":"925461e6-edfb-4755-9242-8a57199b90a5",
+             "name":"channel1",
+             "metadata":{
+                "type":"control"
+             }
+          }
+       ],
+       "content":"config..."
+    }
+The response consists of an ID and key of the Mainflux thing, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional Mainflux channel data (`name` and `metadata` fields), as well.
+
+Enabling and disabling things
+Uploading configuration does not automatically connect thing to the given list of channels. In order to connect the thing to the channels, user needs to send the following HTTP request:
+
+    curl -s -S -i -X PUT -H "Authorization: <user_token>" -H "Content-Type: application/json" http://localhost:8200/things/state/<thing_id> -d '{"state": 1}'
+
+In order to disconnect, the same request should be sent with the value of state set to 0.
+
+For more information about Bootstrap API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/bootstrap/swagger.yml).
+
+### Provisioning
+
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things.
+
+#### Account creation
+
+Use the Mainflux API to create user account:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X POST -H "Content-Type: application/json" https://localhost/users -d '{"email":"john.doe@email.com", "password":"123"}'
+
+Note that when using official `docker-compose`, all services are behind `nginx` proxy and all traffic is `TLS` encrypted.
+
+#### Obtaining an authorization key
+
+In order for this user to be able to authenticate to the system, you will have to create an authorization token for him:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X POST -H "Content-Type: application/json" https://localhost/tokens -d '{"email":"john.doe@email.com", "password":"123"}'
+Response should look like this:
+    
+    {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjMzODg0NzcsImlhdCI6MTUyMzM1MjQ3NywiaXNzIjoibWFpbmZsdXgiLCJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20ifQ.cygz9zoqD7Rd8f88hpQNilTCAS1DrLLgLg4PRcH-iAI"
+    }
+    
+#### System provisioning
+
+Before proceeding, make sure that you have created a new account, and obtained an authorization key.
+
+#### Provisioning things
+Things are provisioned by executing request `POST /things` with a JSON payload. Note that you will also need `user_auth_token` in order to provision things that belong to this particular user.
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X POST -H "Content-Type: application/json" -H "Authorization: <user_auth_token>" https://localhost/things -d '{"name":"weio"}'
+
+Response will contain Location header whose value represents path to newly created thing:
+
+    HTTP/1.1 201 Created
+    Content-Type: application/json
+    Location: /things/81380742-7116-4f6f-9800-14fe464f6773
+    Date: Tue, 10 Apr 2018 10:02:59 GMT
+    Content-Length: 0
+
+#### Retrieving provisioned things
+
+In order to retrieve data of provisioned things that is written in database, you can send following request:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/things
+
+Notice that you will receive only those things that were provisioned by `user_auth_token` owner.
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    Date: Tue, 10 Apr 2018 10:50:12 GMT
+    Content-Length: 1105
+    
+    {
+      "total": 2,
+      "offset": 0,
+      "limit": 10,
+      "things": [
+        {
+          "id": "81380742-7116-4f6f-9800-14fe464f6773",
+          "name": "weio",
+          "key": "7aa91f7a-cbea-4fed-b427-07e029577590"
+        },
+        {
+          "id": "cb63f852-2d48-44f0-a0cf-e450496c6c92",
+          "name": "myapp",
+          "key": "cbf02d60-72f2-4180-9f82-2c957db929d1"
+        }
+      ]
+    }
+
+You can specify `offset` and `limit` parameters in order to fetch specific group of things. In that case, your request should look like:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/things?offset=0&limit=5
+
+If you don't provide them, default values will be used instead: 0 for `offset`, and 10 for `limit`. Note that `limit` cannot be set to values greater than 100. Providing invalid values will be considered malformed request.
+
+#### Removing things
+
+In order to remove you own thing you can send following request:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X DELETE -H "Authorization: <user_auth_token>" https://localhost/things/<thing_id>
+
+#### Provisioning channels
+
+Channels are provisioned by executing request `POST /channels`:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X POST -H "Content-Type: application/json" -H "Authorization: <user_auth_token>" https://localhost/channels -d '{"name":"mychan"}'
+
+After sending request you should receive response with `Location` header that contains path to newly created channel:
+
+    HTTP/1.1 201 Created
+    Content-Type: application/json
+    Location: /channels/19daa7a8-a489-4571-8714-ef1a214ed914
+    Date: Tue, 10 Apr 2018 11:30:07 GMT
+    Content-Length: 0
+
+#### Retrieving provisioned channels
+
+To retreve provisioned channels you should send request to `/channels` with authorization token in `Authorization` header:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/channels
+
+Note that you will receive only those channels that were created by authorization token's owner.
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    Date: Tue, 10 Apr 2018 11:38:06 GMT
+    Content-Length: 139
+    
+    {
+      "total": 1,
+      "offset": 0,
+      "limit": 10,
+      "channels": [
+        {
+          "id": "19daa7a8-a489-4571-8714-ef1a214ed914",
+          "name": "mychan"
+        }
+      ]
+    }
+
+You can specify  offset and  limit parameters in order to fetch specific group of channels. In that case, your request should look like:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/channels?offset=0&limit=5
+
+If you don't provide them, default values will be used instead: 0 for `offset`, and 10 for `limit`. Note that `limit` cannot be set to values greater than 100. Providing invalid values will be considered malformed request.
+
+#### Removing channels
+
+In order to remove specific channel you should send following request:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X DELETE -H "Authorization: <user_auth_token>" https://localhost/channels/<channel_id>
+
+#### Access control
+
+Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel. things that are not connected to this channel are not allowed to communicate over it.
+
+Only user, who is the owner of a channel and of the things, can connect the things to the channel (which is equivalent of giving permissions to these things to communicate over given communication group).
+
+To connect thing to the channel you should send following request:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X PUT -H "Authorization: <user_auth_token>" https://localhost/channels/<channel_id>/things/<thing_id>
+
+You can observe which things are connected to specific channel:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/channels/<channel_id>/things
+
+Response that you'll get should look like this:
+
+    {
+      "total": 2,
+      "offset": 0,
+      "limit": 10,
+      "things": [
+        {
+          "id": "3ffb3880-d1e6-4edd-acd9-4294d013f35b",
+          "name": "d0",
+          "key": "b1996995-237a-4552-94b2-83ec2e92a040",
+          "metadata": "{}"
+        },
+        {
+          "id": "94d166d6-6477-43dc-93b7-5c3707dbef1e",
+          "name": "d1",
+          "key": "e4588a68-6028-4740-9f12-c356796aebe8",
+          "metadata": "{}"
+        }
+      ]
+    }
+
+You can also observe to which channels is specified thing connected:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -H "Authorization: <user_auth_token>" https://localhost/things/<thing_id>/channels
+
+Response that you'll get should look like this:
+
+    {
+      "total": 2,
+      "offset": 0,
+      "limit": 10,
+      "channels": [
+        {
+          "id": "5e62eb13-2695-4860-8d87-85b8a2f80fd4",
+          "name": "c1",
+          "metadata": "{}"
+        },
+        {
+          "id": "c4b5e19a-7ffe-4172-b2c5-c8b9d570a165",
+          "name": "c0",
+          "metadata":"{}"
+        }
+      ]
+    }
+
+If you want to disconnect your thing from the channel, send following request:
+
+    curl -s -S -i --cacert docker/ssl/certs/mainflux-server.crt --insecure -X DELETE -H "Authorization: <user_auth_token>" https://localhost/channels/<channel_id>/things/<thing_id>
+
+### NATS
+
+NATS was built to meet the distributed computing needs of today and tomorrow. NATS is simple and secure messaging made for developers and operators who want to spend more time developing modern applications and services than worrying about a distributed communication system.
+
+<ul>
+<li>Easy to use for developers and operators</li>
+<li>High-Performance</li>
+<li>Always on and available</li>
+<li>Extremely lightweight</li>
+<li>At Most Once and At Least Once Delivery</li>
+<li>Support for Observable and Scalable Services and Event/Data Streams</li>
+<li>Client support for over 30 different programming languages</li>
+<li>Cloud Native, a CNCF project with Kubernetes and Prometheus integrations</li>
+</ul>
+
+#### Use Cases
+
+NATS can run anywhere, from large servers and cloud instances, through edge gateways and even IoT devices. Use cases for NATS include:
+<ul>
+<li>Cloud Messaging
+<ul>
+<li>Services (microservices, service mesh)</li>
+<li>Event/Data Streaming (observability, analytics, ML/AI)</li>
+</ul>
+</li>
+
+<li>Command and Control
+<ul>
+<li>IoT and Edge</li>
+<li>Telemetry / Sensor Data / Command and Control</li>
+</ul>
+</li>
+
+<li>Augmenting or Replacing Legacy Messaging Systems</li>
+<ul>
+
+
+
+## Faceplate
+
+[Faceplate](http://www.faceplate.io/) служит для разработки человеко-машинного интерфейса, посредством которого оператор контролирует протекание технологических процессов на объекте управления. В качестве рабочего места оператора может выступать персональный компьютер, планшет или смартфон. Часто системы для разработки человеко-машинного интерфейса называют SCADA-системами.
+
+В общих чертах процесс разработки скада системы с помощью Faceplate можно представить в виде следующих шагов:
+
+<ul>
+<li>Создание логической структуры проекта, определение контролируемых точек - тегов. (см. [Редактор тегов](http://docs.faceplate.io/docs/ru/work_with_tags#%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80-%D1%82%D0%B5%D0%B3%D0%BE%D0%B2)).</li>
+<li>Создание мнемосхем (см. [Графический редактор](http://docs.faceplate.io/docs/ru/graph_redactor#%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80))</li>
+<li>Создание соединений с контроллерами и определение привязок (см. [Соединения](http://docs.faceplate.io/docs/ru/connection))</li>
+<li>Конфигурирование системы сообщений (см. [Система сообщений](http://docs.faceplate.io/docs/ru/sms_system)).</li>
+<li>Конфигурирование системы архивирования (см. [Система архивирования](http://docs.faceplate.io/docs/ru/archive_system)).</li>
+<li>В системах, где объектом управляют более одного оператора, которые могут иметь разные уровни доступа к объекту настраиваются права доступа операторов (см. [Управление правами пользователей](http://docs.faceplate.io/docs/ru/user_rules_control)).</li>
+</ul>
+
+Для систем, где требуется горячее резервирование и/или участие нескольких серверов выполняется конфигурирование подключенных к системе серверов и распределение функций между ними (см. [Конфигурирование серверов](http://docs.faceplate.io/docs/ru/server_config)).
+
+Настройка отчетных форм, позволяющих агрегировать различную архивируемую информацию в удобном для восприятия виде выполняется с помощью Редактора отчетов.
+
+Разработка дополнительных программных модулей исполняемых сервером в режиме исполнения выполняется с помощью Редактора скриптов.
+
+Faceplate может использоваться для обработки в режиме реального времени видеопотоков поступающих с видеокамер. Подсистема видео позволяет транслировать видеопоток на мнемосхемы, а также определять возникновение движения и реакцию на него (см.[ Работа с видео](http://docs.faceplate.io/docs/ru/work_with_video)).
+
+Поддержка мультиязычных интерфейсов описана в разделе [Разработка мультиязычных проектов](http://docs.faceplate.io/docs/ru/multi_lang_projects).
+
+## Flash
+
+
+
+## Tensorflow serving APP
+
