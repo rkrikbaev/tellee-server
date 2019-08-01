@@ -425,3 +425,46 @@ Faceplate может использоваться для обработки в �
 
 ## Tensorflow serving APP
 
+### TensorFlow Serving
+
+TensorFlow Serving is a flexible, high-performance serving system for machine learning models, designed for production environments. TensorFlow Serving makes it easy to deploy new algorithms and experiments, while keeping the same server architecture and APIs. TensorFlow Serving provides out-of-the-box integration with TensorFlow models, but can be easily extended to serve other types of models and data.
+
+Detailed developer documentation on TensorFlow Serving is available:
+
+<ul>
+<li>[Architecture Overview](https://www.tensorflow.org/tfx/serving/architecture)</li>
+<li>[Server API](https://www.tensorflow.org/tfx/serving/api_docs/cc/)</li>
+<li>[REST Client API](https://www.tensorflow.org/tfx/serving/api_rest)</li>
+</ul>
+
+### Protobuf
+
+Protocol Buffers (Protobuf) is a method of [serializing](https://en.wikipedia.org/wiki/Serialization) structured data. It is useful in developing programs to communicate with each other over a wire or for storing data. The method involves an [interface description language](https://en.wikipedia.org/wiki/Interface_description_language) that describes the structure of some data and a program that generates source code from that description for generating or parsing a stream of bytes that represents the structured data.
+
+[Google](https://en.wikipedia.org/wiki/Google) developed Protocol Buffers for use internally and has provided a [code generator](https://en.wikipedia.org/wiki/Code_generation_(compiler)) for multiple languages under an [open source](https://en.wikipedia.org/wiki/Open_source_software) license.
+
+### TFS MQTTT Agent
+
+If I choose a second option, I need an additional component — Web server to host TensorFlow Serving client. I will use sample GAN model that hosted by a TensorFlow server in a Docker container as backend. I will create a simple Flask application with TensorFlow client and dockerize it. For convenience the application will provide Swagger documentation for our simple REST API.
+Our REST API will have a single resource prediction with a single operation POST on it. It expects an image as an input parameter and returns JSON object with 3 most probable digits and their probabilities for Street View House Numbers. Here I extracted a couple of images for tests.
+
+We have created a Web application that provides public REST API for Street View House Numbers prediction. This is a Flask web application that is, effectively, an adapter of TensorFlow Serving capabilities. It hosts TensorFlow Serving client, transforms HTTP(S) REST requests into protobufs and forwards them to a TensorFlow Serving server via gRPC. TensorFlow server, in its turn, host a GAN model, which do, actually, a prediction job.
+
+Introduced architecture benefits from using of an effective communication (gRPC + protobufs) between internal services and exposes a public REST API for external use.
+
+
+
+## Keycloak
+
+Keycloak is an open source Identity and Access Management solution aimed at modern applications and services. It makes it easy to secure applications and services with little to no code.
+
+This page gives a brief introduction to Keycloak and some of the features. For a full list of features refer to the documentation.
+
+Trying Keycloak is quick and easy. Take a look at the Getting Started tutorial for details.
+
+Users authenticate with Keycloak rather than individual applications. This means that your applications don't have to deal with login forms, authenticating users, and storing users. Once logged-in to Keycloak, users don't have to login again to access a different application.
+
+Through the admin console administrators can centrally manage all aspects of the Keycloak server.
+
+
+
