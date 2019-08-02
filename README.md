@@ -10,14 +10,14 @@ https://drive.google.com/file/d/1jvZtF90YoJIa2G289WVRiT4i6o60chOG/view?usp=shari
 
 [Mainflux](https://www.mainflux.com/) - is modern, scalable, secure open source and patent-free IoT cloud platform written in [Go](https://golang.org/doc/).
 
-Он принимает соединения пользователя и вещи через различные сетевые протоколы (т.е. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap)), тем самым создавая плавный мост между ними. Он используется в качестве промежуточного программного обеспечения IoT для построения сложных решений IoT.
+It accepts user and thing connections over various network protocols (i.e. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap)), thus making a seamless bridge between them. It is used as the IoT middleware for building complex IoT solutions.
 
 <ul>
-<li>Соединение протоколов (т.е. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap))</li>
-<li>[Управление устройством и обеспечение](https://mainflux.readthedocs.io/en/latest/messaging/)</li>
-<li>[Детальное управление доступом](https://mainflux.readthedocs.io/en/latest/provisioning/)</li>
-<li>[Поддержка платформ и инструментария](https://mainflux.readthedocs.io/en/latest/storage/)</li>
-<li>Развертывание на основе контейнеров с использованием [Docker](https://docs.docker.com/)</li>
+<li>Protocol bridging (i.e. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap))</li>
+<li>[Device management and provisioning](https://mainflux.readthedocs.io/en/latest/messaging/)</li>
+<li>[Fine-grained access control](https://mainflux.readthedocs.io/en/latest/provisioning/)</li>
+<li>[Platform logging and instrumentation support](https://mainflux.readthedocs.io/en/latest/storage/)</li>
+<li>Container-based deployment using Docker [Docker](https://docs.docker.com/)</li>
 </ul>
 
 ### HTTP
