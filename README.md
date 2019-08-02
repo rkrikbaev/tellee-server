@@ -20,6 +20,15 @@ It accepts user and thing connections over various network protocols (i.e. [HTTP
 <li>Container-based deployment using Docker [Docker](https://docs.docker.com/)</li>
 </ul>
 
+### Components applied for the project.
+
+<ul>
+<li>users	Manages platform's users and auth concerns
+<li>things	Manages platform's things, channels and access policies
+<li>normalizer	Normalizes SenML messages and generates the "processed" messages stream
+<li>http-adapter	Provides an HTTP interface for accessing communication channels
+<li>mqtt-adapter	Provides an MQTT interface for accessing communication channels
+</ul>
 ### HTTP
 
 Representational State Transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services. Web services that conform to the REST architectural style, called RESTful Web services (RWS), provide interoperability between computer systems on the Internet. RESTful Web services allow the requesting systems to access and manipulate textual representations of Web resources by using a uniform and predefined set of stateless operations. Other kinds of Web services, such as SOAP Web services, expose their own arbitrary sets of operations.
