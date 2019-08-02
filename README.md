@@ -2,7 +2,7 @@
 
 ## Mainflux
 
-[Mainflux](https://www.mainflux.com/) - это современная, масштабируемая, безопасная облачная платформа IoT с открытым исходным кодом и без патентов, написанная на [Go](https://golang.org/doc/).
+[Mainflux](https://www.mainflux.com/) - is modern, scalable, secure open source and patent-free IoT cloud platform written in [Go](https://golang.org/doc/).
 
 Он принимает соединения пользователя и вещи через различные сетевые протоколы (т.е. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap)), тем самым создавая плавный мост между ними. Он используется в качестве промежуточного программного обеспечения IoT для построения сложных решений IoT.
 
