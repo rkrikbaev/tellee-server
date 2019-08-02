@@ -77,11 +77,11 @@ services:
       MF_USERS_DB_USER: mainflux
       MF_USERS_DB_PASS: mainflux
       MF_USERS_DB: users
-      MF_USERS_HTTP_PORT: 8180
+      MF_USERS_HTTP_PORT: 8188
       MF_USERS_GRPC_PORT: 8181
       MF_USERS_SECRET: secret
     ports:
-      - 8180:8180
+      - 8188:8188
     networks:
       - mainflux-base-net
 
