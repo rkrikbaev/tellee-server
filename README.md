@@ -1,5 +1,8 @@
 # TELLY
 
+Сюда добавить схему 
+https://drive.google.com/file/d/1jvZtF90YoJIa2G289WVRiT4i6o60chOG/view?usp=sharing
+
 ## Mainflux
 
 [Mainflux](https://www.mainflux.com/) - is modern, scalable, secure open source and patent-free IoT cloud platform written in [Go](https://golang.org/doc/).
