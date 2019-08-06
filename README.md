@@ -478,3 +478,57 @@ Through the admin console administrators can centrally manage all aspects of the
 
 
 
+## Flash
+
+`FLash` разработан на основе проекта с открытым исходным кодом `Chronograf`. `Flash`, является средой визуализации для данных поступающих с базы данных `InfluxDB` из стэка `Mainflux`. Для Single-Sign-On (SSO), аутентификации и авторизации пользователей во `Flash` интегрирована [OIDC Keycloak](https://www.keycloak.org/documentation.html). Графические компоненты `Flash` основаны на библиотеках:
+
+* D3 | [Home Page](https://d3js.org/), [Docs](https://github.com/d3/d3/wiki)
+* Predix UI | [Home Page](https://www.predix-ui.com/#/home), [Docs](https://docs.predix.io/en-US/content/platform/web_application_development/predix_ui/get-started-with-predix-ui-components)
+* Dygraphs | [Home Page](http://dygraphs.com/), [Docs](http://dygraphs.com/tutorial.html)
+
+### Chronograf
+
+Chronograf is InfluxData’s open source web application. Use Chronograf with the other components of the TICK stack to visualize your monitoring data and easily create alerting and automation rules.
+
+### Key features
+
+#### Infrastructure monitoring
+
+* View all hosts and their statuses in your infrastructure
+* View the configured applications on each host
+* Monitor your applications with Chronograf’s pre-created dashboards
+
+#### Alert management
+
+Chronograf offers a UI for Kapacitor, InfluxData’s data processing framework for creating alerts, running ETL jobs, and detecting anomalies in your data.
+
+* Generate threshold, relative, and deadman alerts on your data
+* Easily enable and disable existing alert rules
+* View all active alerts on an alert dashboard
+* Send alerts to the supported event handlers, including Slack, PagerDuty, HipChat, and more
+
+#### Data visualization
+
+* Monitor your application data with Chronograf’s pre-created dashboards
+* Create your own customized dashboards complete with various graph types and template variables
+* Investigate your data with Chronograf’s data explorer and query templates
+
+#### Database management
+
+* Create and delete databases and retention policies
+* View currently-running queries and stop inefficient queries from overloading your system
+* Create, delete, and assign permissions to users (Chronograf supports InfluxDB OSS and InfluxEnterprise user management)
+
+#### Multi-organization and multi-user support
+
+* Create organizations and assign users to those organizations
+* Restrict access to administrative functions
+* Allow users to set up and maintain unique dashboards for their organizations
+
+
+## Mainflux Admin Panel
+
+Административная панель(АП) разработана для удобного управления `Things`, `Channels` и `Users` `Mainflux`-а. АП представляет собой интерфейс и API( с помощью которого производится взаимодействие с `Mainflux` и `Bootstrap`). Основной задачей АП, является настройка конфигурации для определенных типов устройств, для их дальнейшей работы с `Bootstrap`.
+
+Mainflux Admin Panel будет взаимодействовать с провайдером OIDC `Keycloak`, для распределения пользователей АП по организациям (только участники одной организации могут просматривать конфигурацию для устройств принадлежащих к это организации).
+
