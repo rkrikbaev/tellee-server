@@ -28,6 +28,7 @@ It accepts user and thing connections over various network protocols (i.e. [HTTP
 <li>normalizer	Normalizes SenML messages and generates the "processed" messages stream
 <li>http-adapter	Provides an HTTP interface for accessing communication channels
 <li>mqtt-adapter	Provides an MQTT interface for accessing communication channels
+<li>application 
 </ul>
 
 ### HTTP adapter
@@ -264,10 +265,17 @@ Mainflux Admin Panel будет взаимодействовать с прова
 
 # Functional description
 
+Данный раздел содержит информацию по функционированию системы. 
+
 ## Installation
 
-## Bootstarp
+Развертывание сервисов Mainflux производится на базе контейнеров docker.
+
+## Bootstarping
+
+Описывается все операции проводимые при конфигурировании сервисов системы.
 
 ## Data Flow
 
+Описываются основные потоки распределения информации
 
