@@ -261,3 +261,13 @@ Chronograf offers a UI for Kapacitor, InfluxData’s data processing framework f
 
 Mainflux Admin Panel будет взаимодействовать с провайдером OIDC `Keycloak`, для распределения пользователей АП по организациям (только участники одной организации могут просматривать конфигурацию для устройств принадлежащих к это организации).
 
+
+# Functional description
+
+## Installation
+
+## Bootstarp
+
+## Data Flow
+
+
