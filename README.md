@@ -113,11 +113,11 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 #### Provisioning things
 
-Создание/удаление/смена названия и тд
+Create/delete/change name and so on
 
 #### Provisioning applications
 
-Создание/удаление/смена названия и тд
+Create/delete/change name and so on
 
 
 ### NATS
