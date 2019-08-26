@@ -1,7 +1,23 @@
-# TELLY
+# TELLEE
 
-Сюда добавить схему 
-https://drive.google.com/file/d/1jvZtF90YoJIa2G289WVRiT4i6o60chOG/view?usp=sharing
+## Introduction
+
+“Telle” mission - our platform connects rotating equipment to Cloud services or customer’s on-premises servers; collects and stores industrial data; analyzes machine performance with the help of machine-learning algorithms.
+
+Moreover, Tellee is capable of connecting various industrial equipment and performing analysis to improve operational efficiency.
+
+Modern industrial production implies the presence of automated technology process and lean business processes, which are evaluated based on integrated plant performance factors, such as cost of a single production unit, faulty production expenses, downtime expenses, costs related to delivery and storage of end products; efficiency and productivity of deployed equipment. 
+
+In the process of improving the productivity of the enterprise, machine learning and big data analysis are the key instruments that supplement classical methods of production optimization. 
+
+The most common examples of machine learning use include:
+increase in productivity of manufacturing activity as a result of equipment optimal operation mode selection; 
+increase in end-product quality through diagnostics of critical factors that influence the end product;
+optimization of maintenance  and repairs of expensive manufacturing equipment, predictive diagnostics and analysis of the reduction in efficiency of equipment;
+dynamic management of supply chain – optimization and forecasting of the procurement process, delivery, storage, demand and supply;
+comprehensive enhancement of production indexes by means of detecting implicit factors that affect the production process, deployment of new methods for equipment operation modelling with the use of digital technologies.
+
+![tellee](/uploads/8a8baa9b3faf7d123aa92a02bac3236c/tellee.png)
 
 
 Описание TELLY
@@ -265,15 +281,105 @@ Mainflux Admin Panel будет взаимодействовать с прова
 
 # Functional description
 
-Данный раздел содержит информацию по функционированию системы. 
+Tellen Edge can transmit and receive data from most of the industrial sources that include: sensors, Programmable Logic Controllers, SCADA/ICS systems, MES systems and corporate EAM (Enterprise Asset Management) systems. Depending on the configuration,  data can be transmitted directly to Tellee or via Telle Edge.
+
+Telle’s architecture is based on the microservices ideology that enables a secure and easily scalable environment for data processing and comprehensive analysis. One of Telle’s strongest assets is the proactive approach to emergencies and process alarms that’s in the core of the platform.
+
+Generally, this is the sequence of the platform’s operation:
+<ul>
+<li>Edge Connection- connect industrial equipment and other data sources</li>
+<li>Data processing- monitor data, visualize efficiency, analyze anomalies, perform predictive diagnostics</li>
+<li>Analysis and following action- manage and optimize the production process, increase KPI and OEE</li>
+<ul>
+
+![tellee1](/uploads/3e6adf4452e2023038d2eb3025783b68/tellee1.png)
+
+
+## TELLEE EDGE
+
+Telle Edge receives and transmits data to Tellee and allows integration of trained machine learning models into local systems for analysis of source information.
+Telle Edge supports various platforms and operating systems. It can operate on both ARM and Intel processors. Security is ensured by data encryption and token-based system that issues unique tokens to each edge device. 
+Support for industrial data protocols such as Modbus, Modbus TCP/IP, OPC DA, OPC UA.
+Telle edge is capable of buffering data and in case of a connection interruption, it will synchronize all the buffered data as soon as the connection is up again. 
+A variable schema for storage of structured or unstructured data. Tools for creation and configuration of connections to the equipment. Role-based authentication configuration at the Edge level. User authentication at the Edge level uses 128-bit password hashing algorithm.
+
+
+![tellee2](/uploads/f5a6a9697d7d3f4ad095faa2e6ed8046/tellee2.png)
+
+
+
+## TELLE λ (lambda) - Service
+
+Tellee is capable of forecasting equipment operation, providing all the necessary information regarding the technology process that is compiled from the PLC data. 
+
+Main stages of machine learning models integration
+
+<ul>
+<li>Assigning the objectives and conditions for models of successful operation</li>
+<li>Definition of metrics and criteria for conformance of models to real-life equipment</li>
+<li>Rating of data accessibility, processing of data</li>
+<li>Selection of type of models and methods of machine learning. Training and testing of models</li>
+<li>Deployment, support, update and if necessary retraining of models</li>
+</ul>
+
+
+![tellee3](/uploads/939a60ca63c0329aeafb9266b208d0f6/tellee3.png)
+
+
+reprocessing and trimmings of the data are crucial for the correct utilization of data for machine learning. Unprocessed data are often distorted and unreliable. Employing this kind of data during the building of models might lead to incorrect results. These steps are a part of the processing stage and often implicate the initial examination of data.
+
+Research of normal equipment operation patterns in comparison to abnormal operation and screening of features that define the model structure.
+
+Development of equipment operation model, design of infrastructure, classification of common factors, the combinations of various types of models, equipment failure probability forecasting. Research of possible way to deliver alarms that contain forecasted equipment failure possibility.
+
+Deployment of a trained model into production. Depending on a customer request, it can be deployed either in the cloud or at the edge device. Machine learning models are limited only to computational resources of a device they are deployed on and in some cases by the speed of data transfer.
+
+## UI/UX
+
+Telle Flash user interface provides industry-ready IoT visualization that allows event management without the need for any additional software.
+
+Flash’s Integrated toolkit allows users to monitor equipment operation, analyze anomalies and events. Machine Learning analytics provide predictive alarms that can help operating staff take preventive action to minimize the effects of abnormality early on. Moreover, users can dissect the abnormality in order to get to the root of the problem.
+
+Criticality analysis enables users to set their priorities in relation to the importance of enterprise assets
+
+User interface elements are optimized for long hour shifts. Operators can switch between dark and light themes depending on their preferences. Color palette is adjusted in a way that minimizes eye strain but at the same time delivers information efficiently.
+
+
+![tellee4](/uploads/e3e98ae8c0c1dbb0118595280355423b/tellee4.png)
+
+
 
 ## Installation
 
-Развертывание сервисов Mainflux производится на базе контейнеров docker.
+Deployment of Influx services based on docker containers.
+Detailed procedure to be provided.
+
+Tellee start procedure 
+
+Detailed procedure to be provided.
+
 
 ## Bootstarping
 
-Описывается все операции проводимые при конфигурировании сервисов системы.
+Bootstrapping refers to a self-starting process that is supposed to proceed without external input. 
+Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Tellee things. 
+
+The platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:
+<ul>
+<li>the device contains only bootstrap credentials and no Tellee credentials</li>
+<li>the device, for any reason, fails to start a communication with the configured services (server not responding, authentication failure, etc..).</li>
+<li>the device, for any reason, wants to update its configuration</li>
+</ul>
+
+
+![tellee5](/uploads/7be1c46c1f39609ef270084e14452f50/tellee5.png)
+
+
+## Mainflux Admin Panel
+
+The administrative panel (AP) is designed for convenient management of Things, Channels and Users Mainflux. The AP is an interface and API (through which it interacts with Mainflux and Bootstrap). The main task of the AP is to configure for certain types of devices, for their further work with Bootstrap.
+The Mainflux Admin Panel will work with the OIDC Keycloak provider to distribute AP users by organization (only members of one organization can view the configuration for devices belonging to there organization).
+
 
 ## Data Flow
 
