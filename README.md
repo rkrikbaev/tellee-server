@@ -325,7 +325,7 @@ Criticality analysis enables users to set their priorities in relation to the im
 
 User interface elements are optimized for long hour shifts. Operators can switch between dark and light themes depending on their preferences. Color palette is adjusted in a way that minimizes eye strain but at the same time delivers information efficiently.
 
-`FLash` was developed based on the open source project` Chronograf`. `Flash`, is a visualization environment for data coming from the` InfluxDB` database from the `Mainflux` stack. For Single-Sign-On (SSO), authentication, and user authorization, OIDC Keycloak](https://www.keycloak.org/documentation.html) is integrated into `Flash`. The `Flash` graphical components are based on libraries:
+`FLash` was developed based on the open source project` Chronograf`. `Flash`, is a visualization environment for data coming from the` InfluxDB` database from the `Mainflux` stack. For Single-Sign-On (SSO), authentication, and user authorization, [OIDC Keycloak](https://www.keycloak.org/documentation.html) is integrated into `Flash`. The `Flash` graphical components are based on libraries:
 
 * D3 | [Home Page](https://d3js.org/), [Docs](https://github.com/d3/d3/wiki)
 * Predix UI | [Home Page](https://www.predix-ui.com/#/home), [Docs](https://docs.predix.io/en-US/content/platform/web_application_development/predix_ui/get-started-with-predix-ui-components)
