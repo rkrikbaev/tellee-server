@@ -109,12 +109,6 @@ There are two more fields: `external_id` and `external_key`. External ID represe
 Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things.
 
 
-#### Account creation
-
-Use the Mainflux API to create user account:
-
-Необходимо рассписать создание профилей пользователей через использование KEYCLOAK + FLASH
-
 #### Access control
 
 #### Provisioning things
@@ -153,29 +147,28 @@ InfluxDB works with InfluxQL, a SQL-like query language for interacting with dat
 
 ## Faceplate
 
-[Faceplate](http://www.faceplate.io/) служит для разработки человеко-машинного интерфейса, посредством которого оператор контролирует протекание технологических процессов на объекте управления. В качестве рабочего места оператора может выступать персональный компьютер, планшет или смартфон. Часто системы для разработки человеко-машинного интерфейса называют SCADA-системами.
+Faceplate is used to develop a human-machine interface, through which the operator controls the technological processes performing at the control object. The operator’s workplace can be a personal computer, a tablet or a smartphone. The systems for developing a human-machine interface are often called SCADA systems.
 
-В общих чертах процесс разработки скада системы с помощью Faceplate можно представить в виде следующих шагов:
+In general, the process of developing a ‘scada’ system using Faceplate, can be represented in the form of the following steps:
+    <ul>
+   <li>Creating a logical structure of the project, the definition of controlled points - tags. (see <a href="http://docs.faceplate.io/docs/en/work_with_tags">Tag editor</a> ).</li>
+   <li>Creating mnemonics (see <a href="http://docs.faceplate.io/docs/en/graph_redactor">Graphic editor</a>)</li>
+   <li>Creating connections to controllers and defining of the bindings (see <a href="http://docs.faceplate.io/docs/en/connection">Соnnections</a> )</li>
+   <li>Configuring the messages system (see <a href="http://docs.faceplate.io/docs/en/sms_system">Messages system</a> ).</li>
+   <li> Configuring the archiving system (see <a href="http://docs.faceplate.io/docs/en/archive_system">Archiving System</a> ).</li>
+   </ul>
 
-<ul>
-<li>Создание логической структуры проекта, определение контролируемых точек - тегов. (см. [Редактор тегов](http://docs.faceplate.io/docs/ru/work_with_tags#%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80-%D1%82%D0%B5%D0%B3%D0%BE%D0%B2)).</li>
-<li>Создание мнемосхем (см. [Графический редактор](http://docs.faceplate.io/docs/ru/graph_redactor#%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80))</li>
-<li>Создание соединений с контроллерами и определение привязок (см. [Соединения](http://docs.faceplate.io/docs/ru/connection))</li>
-<li>Конфигурирование системы сообщений (см. [Система сообщений](http://docs.faceplate.io/docs/ru/sms_system)).</li>
-<li>Конфигурирование системы архивирования (см. [Система архивирования](http://docs.faceplate.io/docs/ru/archive_system)).</li>
-<li>В системах, где объектом управляют более одного оператора, которые могут иметь разные уровни доступа к объекту настраиваются права доступа операторов (см. [Управление правами пользователей](http://docs.faceplate.io/docs/ru/user_rules_control)).</li>
-</ul>
+In systems where the object is controlled by more than one operator, which may have different levels of access to the object, the access rights of operators are set up (see [User rights management](http://docs.faceplate.io/docs/en/user_rules_control) ).
 
-Для систем, где требуется горячее резервирование и/или участие нескольких серверов выполняется конфигурирование подключенных к системе серверов и распределение функций между ними (см. [Конфигурирование серверов](http://docs.faceplate.io/docs/ru/server_config)).
+For systems where hot backup and/or participation of several servers is required, the servers connected to the system are configured, and functions are distributed between them (see [Configuring servers](http://docs.faceplate.io/docs/en/server_config) ).
 
-Настройка отчетных форм, позволяющих агрегировать различную архивируемую информацию в удобном для восприятия виде выполняется с помощью Редактора отчетов.
+The reporting forms setting up that allow to aggregate the various activated information in an easy-to-read form, are performed using the [Report Editor](ttp://docs.faceplate.io/docs/en/red_of_rep) .
 
-Разработка дополнительных программных модулей исполняемых сервером в режиме исполнения выполняется с помощью Редактора скриптов.
+The development of additional software modules, executed by the server in runtime mode, is performed using the [Script Editor](http://docs.faceplate.io/docs/en/red_of_sripts) .
 
-Faceplate может использоваться для обработки в режиме реального времени видеопотоков поступающих с видеокамер. Подсистема видео позволяет транслировать видеопоток на мнемосхемы, а также определять возникновение движения и реакцию на него (см.[ Работа с видео](http://docs.faceplate.io/docs/ru/work_with_video)).
+Faceplate can be used to process in real-time mode the video streams, coming from video cameras. The subsystem allows to broadcast a video stream to mnemonic diagrams, as well as to determine the movement appearance and the reaction to it. See [Working with video](http://docs.faceplate.io/docs/en/work_with_video).
 
-Поддержка мультиязычных интерфейсов описана в разделе [Разработка мультиязычных проектов](http://docs.faceplate.io/docs/ru/multi_lang_projects).
-
+Support of multilingual interfaces is described in the section Development of multilanguage projects.
 
 ## Tensorflow serving APP
 
@@ -221,15 +214,6 @@ Users authenticate with Keycloak rather than individual applications. This means
 Through the admin console administrators can centrally manage all aspects of the Keycloak server.
 
 
-
-## Flash
-
-`FLash` разработан на основе проекта с открытым исходным кодом `Chronograf`. `Flash`, является средой визуализации для данных поступающих с базы данных `InfluxDB` из стэка `Mainflux`. Для Single-Sign-On (SSO), аутентификации и авторизации пользователей во `Flash` интегрирована [OIDC Keycloak](https://www.keycloak.org/documentation.html). Графические компоненты `Flash` основаны на библиотеках:
-
-* D3 | [Home Page](https://d3js.org/), [Docs](https://github.com/d3/d3/wiki)
-* Predix UI | [Home Page](https://www.predix-ui.com/#/home), [Docs](https://docs.predix.io/en-US/content/platform/web_application_development/predix_ui/get-started-with-predix-ui-components)
-* Dygraphs | [Home Page](http://dygraphs.com/), [Docs](http://dygraphs.com/tutorial.html)
-
 ### Chronograf
 
 Chronograf is InfluxData’s open source web application. Use Chronograf with the other components of the TICK stack to visualize your monitoring data and easily create alerting and automation rules.
@@ -272,9 +256,8 @@ Chronograf offers a UI for Kapacitor, InfluxData’s data processing framework f
 
 ## Mainflux Admin Panel
 
-Административная панель(АП) разработана для удобного управления `Things`, `Channels` и `Users` `Mainflux`-а. АП представляет собой интерфейс и API( с помощью которого производится взаимодействие с `Mainflux` и `Bootstrap`). Основной задачей АП, является настройка конфигурации для определенных типов устройств, для их дальнейшей работы с `Bootstrap`.
-
-Mainflux Admin Panel будет взаимодействовать с провайдером OIDC `Keycloak`, для распределения пользователей АП по организациям (только участники одной организации могут просматривать конфигурацию для устройств принадлежащих к это организации).
+The administrative panel (AP) is designed for convenient management of Things, Channels and Users Mainflux. The AP is an interface and API (through which it interacts with Mainflux and Bootstrap). The main task of the AP is to configure for certain types of devices, for their further work with Bootstrap.
+The Mainflux Admin Panel will work with the OIDC Keycloak provider to distribute AP users by organization (only members of one organization can view the configuration for devices belonging to there organization).
 
 
 # Functional description
@@ -332,7 +315,7 @@ Development of equipment operation model, design of infrastructure, classificati
 
 Deployment of a trained model into production. Depending on a customer request, it can be deployed either in the cloud or at the edge device. Machine learning models are limited only to computational resources of a device they are deployed on and in some cases by the speed of data transfer.
 
-## UI/UX
+## Flash, UX/UI
 
 Telle Flash user interface provides industry-ready IoT visualization that allows event management without the need for any additional software.
 
@@ -342,19 +325,14 @@ Criticality analysis enables users to set their priorities in relation to the im
 
 User interface elements are optimized for long hour shifts. Operators can switch between dark and light themes depending on their preferences. Color palette is adjusted in a way that minimizes eye strain but at the same time delivers information efficiently.
 
+`FLash` разработан на основе проекта с открытым исходным кодом `Chronograf`. `Flash`, является средой визуализации для данных поступающих с базы данных `InfluxDB` из стэка `Mainflux`. Для Single-Sign-On (SSO), аутентификации и авторизации пользователей во `Flash` интегрирована [OIDC Keycloak](https://www.keycloak.org/documentation.html). Графические компоненты `Flash` основаны на библиотеках:
+
+* D3 | [Home Page](https://d3js.org/), [Docs](https://github.com/d3/d3/wiki)
+* Predix UI | [Home Page](https://www.predix-ui.com/#/home), [Docs](https://docs.predix.io/en-US/content/platform/web_application_development/predix_ui/get-started-with-predix-ui-components)
+* Dygraphs | [Home Page](http://dygraphs.com/), [Docs](http://dygraphs.com/tutorial.html)
 
 ![tellee4](/uploads/e3e98ae8c0c1dbb0118595280355423b/tellee4.png)
 
-
-
-## Installation
-
-Deployment of Influx services based on docker containers.
-Detailed procedure to be provided.
-
-Tellee start procedure 
-
-Detailed procedure to be provided.
 
 
 ## Bootstarping
@@ -373,13 +351,17 @@ The platform supports bootstrapping process, but some of the preconditions need 
 ![tellee5](/uploads/7be1c46c1f39609ef270084e14452f50/tellee5.png)
 
 
-## Mainflux Admin Panel
+## Installation
 
-The administrative panel (AP) is designed for convenient management of Things, Channels and Users Mainflux. The AP is an interface and API (through which it interacts with Mainflux and Bootstrap). The main task of the AP is to configure for certain types of devices, for their further work with Bootstrap.
-The Mainflux Admin Panel will work with the OIDC Keycloak provider to distribute AP users by organization (only members of one organization can view the configuration for devices belonging to there organization).
+Deployment of Influx services based on docker containers.
+Detailed procedure to be provided.
 
+Tellee start procedure 
 
-## Data Flow
+Detailed procedure to be provided.
 
-Описываются основные потоки распределения информации
+## Account creation
 
+Use the Mainflux API to create user account:
+
+Необходимо рассписать создание профилей пользователей через использование KEYCLOAK + FLASH
