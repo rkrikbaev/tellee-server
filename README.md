@@ -20,8 +20,6 @@ comprehensive enhancement of production indexes by means of detecting implicit f
 ![tellee](/uploads/8a8baa9b3faf7d123aa92a02bac3236c/tellee.png)
 
 
-Описание TELLY
-
 ## Mainflux
 
 [Mainflux](https://www.mainflux.com/) - is modern, scalable, secure open source and patent-free IoT cloud platform written in [Go](https://golang.org/doc/).
