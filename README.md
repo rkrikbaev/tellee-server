@@ -354,9 +354,8 @@ The platform supports bootstrapping process, but some of the preconditions need 
 ## Installation
 
 Deployment of Influx services based on docker containers.
-Detailed procedure to be provided.
+**Detailed procedure to be provided**
 
 Tellee start procedure 
-
-Detailed procedure to be provided.
+**Detailed procedure to be provided**
 
