@@ -151,20 +151,20 @@ Faceplate is used to develop a human-machine interface, through which the operat
 
 In general, the process of developing a ‘scada’ system using Faceplate, can be represented in the form of the following steps:
     <ul>
-   <li>Creating a logical structure of the project, the definition of controlled points - tags. (see <a href="http://docs.faceplate.io/docs/en/work_with_tags">Tag editor</a> ).</li>
-   <li>Creating mnemonics (see <a href="http://docs.faceplate.io/docs/en/graph_redactor">Graphic editor</a>)</li>
-   <li>Creating connections to controllers and defining of the bindings (see <a href="http://docs.faceplate.io/docs/en/connection">Соnnections</a> )</li>
-   <li>Configuring the messages system (see <a href="http://docs.faceplate.io/docs/en/sms_system">Messages system</a> ).</li>
-   <li> Configuring the archiving system (see <a href="http://docs.faceplate.io/docs/en/archive_system">Archiving System</a> ).</li>
+   <li>Creating a logical structure of the project, the definition of controlled points - tags. (see <a href="http://docs.faceplate.io:3000/docs/en/work_with_tags">Tag editor</a> ).</li>
+   <li>Creating mnemonics (see <a href="http://docs.faceplate.io:3000/docs/en/graph_redactor">Graphic editor</a>)</li>
+   <li>Creating connections to controllers and defining of the bindings (see <a href="http://docs.faceplate.io:3000/docs/en/connection">Соnnections</a> )</li>
+   <li>Configuring the messages system (see <a href="http://docs.faceplate.io:3000/docs/en/sms_system">Messages system</a> ).</li>
+   <li> Configuring the archiving system (see <a href="http://docs.faceplate.io:3000/docs/en/archive_system">Archiving System</a> ).</li>
    </ul>
 
-In systems where the object is controlled by more than one operator, which may have different levels of access to the object, the access rights of operators are set up (see [User rights management](http://docs.faceplate.io/docs/en/user_rules_control) ).
+In systems where the object is controlled by more than one operator, which may have different levels of access to the object, the access rights of operators are set up (see [User rights management](http://docs.faceplate.io:3000/docs/en/user_rules_control) ).
 
-For systems where hot backup and/or participation of several servers is required, the servers connected to the system are configured, and functions are distributed between them (see [Configuring servers](http://docs.faceplate.io/docs/en/server_config) ).
+For systems where hot backup and/or participation of several servers is required, the servers connected to the system are configured, and functions are distributed between them (see [Configuring servers](http://docs.faceplate.io:3000/docs/en/server_config) ).
 
-The reporting forms setting up that allow to aggregate the various activated information in an easy-to-read form, are performed using the [Report Editor](ttp://docs.faceplate.io/docs/en/red_of_rep) .
+The reporting forms setting up that allow to aggregate the various activated information in an easy-to-read form, are performed using the [Report Editor](ttp://docs.faceplate.io:3000/docs/en/red_of_rep) .
 
-The development of additional software modules, executed by the server in runtime mode, is performed using the [Script Editor](http://docs.faceplate.io/docs/en/red_of_sripts) .
+The development of additional software modules, executed by the server in runtime mode, is performed using the [Script Editor](http://docs.faceplate.io:3000/docs/en/red_of_sripts) .
 
 Faceplate can be used to process in real-time mode the video streams, coming from video cameras. The subsystem allows to broadcast a video stream to mnemonic diagrams, as well as to determine the movement appearance and the reaction to it. See [Working with video](http://docs.faceplate.io/docs/en/work_with_video).
 
