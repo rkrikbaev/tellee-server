@@ -382,7 +382,7 @@ services:
     container_name: ui-api
     restart: on-failure
     build:
-      context: ../mainflux_admin
+      context: ../mainflux_admin/
       dockerfile: ./Dockerfile
     ports:
       - "5000:5000"
