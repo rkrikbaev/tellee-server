@@ -169,14 +169,14 @@ services:
     networks:
       - mainflux-base-net
 
-  ui:
-    image: mainflux/ui:latest
-    container_name: mainflux-ui
-    restart: on-failure
-    ports:
-      - 3000:3000
-    networks:
-      - mainflux-base-net
+  #ui:
+  #  image: mainflux/ui:latest
+  #  container_name: mainflux-ui
+  #  restart: on-failure
+  #  ports:
+  #    - 3000:3000
+  #  networks:
+  #    - mainflux-base-net
 
   ws-adapter:
     image: mainflux/ws:latest
