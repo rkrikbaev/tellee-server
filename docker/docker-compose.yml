@@ -364,6 +364,8 @@ services:
       - 8900:8900
     networks:
       - mainflux-base-net
+    volumes:
+      - ./channels.toml:/config/channels.toml
 
   ui-interface:
     container_name: ui-interface
