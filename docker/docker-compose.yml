@@ -370,7 +370,7 @@ services:
     restart: on-failure
     build:
       context: ../mainflux_admin/client/
-      dockerfile: ../mainflux_admin/client/Dockerfile
+      #dockerfile: ./Dockerfile
     ports:
       - "8000:8000"
     networks:
@@ -383,7 +383,7 @@ services:
     restart: on-failure
     build:
       context: ../mainflux_admin/
-      dockerfile: ../mainflux_admin/Dockerfile
+      #dockerfile: ../mainflux_admin/Dockerfile
     ports:
       - "5000:5000"
     depends_on:
