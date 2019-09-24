@@ -308,8 +308,8 @@ services:
       MF_BOOTSTRAP_ES_URL: es-redis:6379
     networks:
       - mainflux-base-net
-      
-      
+
+
   influxdb-reader:
     image: mainflux/influxdb-reader:latest
     container_name: mainflux-influxdb-reader
@@ -327,7 +327,7 @@ services:
       - 8905:8905
     networks:
       - mainflux-base-net
-      
+
   influxdb:
     image: influxdb:1.6.4-alpine
     container_name: mainflux-influxdb
@@ -365,4 +365,48 @@ services:
     networks:
       - mainflux-base-net
 
+  ui-interface:
+    container_name: ui-interface
+    restart: on-failure
+    build:
+      context: ../mainflux_admin/client/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - mainflux-base-net
+    links:
+      - ui-api
 
+  ui-api:
+    container_name: ui-api
+    restart: on-failure
+    build:
+      context: ../mainflux_admin/
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ui-db
+    networks:
+      - mainflux-base-net
+    links:
+      - ui-db
+      - nginx
+      - bootstrap
+    environment:
+      WAIT_HOSTS: ui-db:27017
+      DATABASE_URL: mongodb://ui-db:27017/mainflux_admin
+      MAINFLUX_URL: nginx
+      BOOTSTRAP_URL: bootstrap:8200
+      UI_URL: ui-interface:8000
+
+  ui-db:
+    container_name: ui-mongodb
+    image: mongo
+    restart: always
+    volumes:
+      - ./data-node:/data/db
+    command: mongod
+    networks:
+      - mainflux-base-net
