@@ -1,142 +1,361 @@
-# Mainflux
+# TELLEE
 
-[![build][ci-badge]][ci-url]
-[![go report card][grc-badge]][grc-url]
-[![coverage][cov-badge]][cov-url]
-[![license][license]](LICENSE)
-[![chat][gitter-badge]][gitter]
+## Introduction
 
-![banner][banner]
+“Telle” mission - our platform connects rotating equipment to Cloud services or customer’s on-premises servers; collects and stores industrial data; analyzes machine performance with the help of machine-learning algorithms.
 
-Mainflux is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
+Moreover, Tellee is capable of connecting various industrial equipment and performing analysis to improve operational efficiency.
 
-It accepts user and thing connections over various network protocols (i.e. HTTP,
-MQTT, WebSocket, CoAP), thus making a seamless bridge between them. It is used as the IoT middleware
-for building complex IoT solutions.
+Modern industrial production implies the presence of automated technology process and lean business processes, which are evaluated based on integrated plant performance factors, such as cost of a single production unit, faulty production expenses, downtime expenses, costs related to delivery and storage of end products; efficiency and productivity of deployed equipment. 
 
-For more details, check out the [official documentation][docs].
+In the process of improving the productivity of the enterprise, machine learning and big data analysis are the key instruments that supplement classical methods of production optimization. 
 
-Mainflux is member of the [Linux Foundation][lf] and an active contributor
-to the [EdgeX Foundry][edgex] project. It has been made with :heart: by [Mainflux company][company],
-which maintains the project and offers professional services around it.
+The most common examples of machine learning use include:
+increase in productivity of manufacturing activity as a result of equipment optimal operation mode selection; 
+increase in end-product quality through diagnostics of critical factors that influence the end product;
+optimization of maintenance  and repairs of expensive manufacturing equipment, predictive diagnostics and analysis of the reduction in efficiency of equipment;
+dynamic management of supply chain – optimization and forecasting of the procurement process, delivery, storage, demand and supply;
+comprehensive enhancement of production indexes by means of detecting implicit factors that affect the production process, deployment of new methods for equipment operation modelling with the use of digital technologies.
 
-## Features
-- Multi-protocol connectivity and protocol bridging (HTTP, MQTT, WebSocket and CoAP)
-- Device management and provisioning
-- Fine-grained access control
-- Storage support (Cassandra, InfluxDB and MongoDB)
-- Platform logging and instrumentation support
-- Event sourcing
-- Container-based deployment using [Docker][docker] and [Kubernetes][kubernetes]
-- [LoRaWAN][lora] network integration
-- SDK
-- CLI
-- Small memory footprint and fast execution
-- Domain-driven design architecture, high-quality code and test coverage
+![tellee](/uploads/8a8baa9b3faf7d123aa92a02bac3236c/tellee.png)
 
-## Install
-Before proceeding, install the following prerequisites:
 
-- [Docker](https://docs.docker.com/install/)
-- [Docker compose](https://docs.docker.com/compose/install/)
+## Mainflux
 
-Once everything is installed, execute the following commands from project root:
+[Mainflux](https://www.mainflux.com/) - is modern, scalable, secure open source and patent-free IoT cloud platform written in [Go](https://golang.org/doc/).
 
-```bash
-docker-compose -f docker/docker-compose.yml up -d
-```
+It accepts user and thing connections over various network protocols (i.e. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap)), thus making a seamless bridge between them. It is used as the IoT middleware for building complex IoT solutions.
 
-This will bring up all Mainflux dockers and inter-connect them in the composition.
+<ul>
+<li>Protocol bridging (i.e. [HTTP](https://ru.wikipedia.org/wiki/HTTP), [MQTT](https://ru.wikipedia.org/wiki/MQTT), [WebSocket](https://ru.wikipedia.org/wiki/WebSocket), [CoAP](http://lib.tssonline.ru/articles2/internet-of-things/protokol-interneta-veschey-coap))</li>
+<li>[Device management and provisioning](https://mainflux.readthedocs.io/en/latest/messaging/)</li>
+<li>[Fine-grained access control](https://mainflux.readthedocs.io/en/latest/provisioning/)</li>
+<li>[Platform logging and instrumentation support](https://mainflux.readthedocs.io/en/latest/storage/)</li>
+<li>Container-based deployment using Docker [Docker](https://docs.docker.com/)</li>
+</ul>
 
-## Usage
-Best way to quickstart using Mainflux is via CLI:
-```
-make cli
-./build/mainflux-cli version
-```
+### Components applied for the project.
 
-> Mainflux CLI can also be downloaded as a tarball from [offical release page][rel]
+<ul>
+<li>users	Manages platform's users and auth concerns
+<li>things	Manages platform's things, channels and access policies
+<li>normalizer	Normalizes SenML messages and generates the "processed" messages stream
+<li>http-adapter	Provides an HTTP interface for accessing communication channels
+<li>mqtt-adapter	Provides an MQTT interface for accessing communication channels
+<li>application 
+</ul>
 
-If this works, head to [official documentation][docs] to understand Mainflux provisioning and messaging.
+### HTTP adapter
 
-## Documentation
-Official documentation is hosted at [Mainflux Read The Docs page][docs].
+Representational State Transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services. Web services that conform to the REST architectural style, called RESTful Web services (RWS), provide interoperability between computer systems on the Internet. RESTful Web services allow the requesting systems to access and manipulate textual representations of Web resources by using a uniform and predefined set of stateless operations. Other kinds of Web services, such as SOAP Web services, expose their own arbitrary sets of operations.
 
-Documentation is auto-generated from Markdown files in `./docs` directory.
-If you spot an error or need for corrections, please let us know - or even better: send us a PR.
+"Web resources" were first defined on the World Wide Web as documents or files identified by their URLs. However, today they have a much more generic and abstract definition that encompasses every thing or entity that can be identified, named, addressed, or handled, in any way whatsoever, on the Web. In a RESTful Web service, requests made to a resource's URI will elicit a response with a payload formatted in HTML, XML, JSON, or some other format. The response can confirm that some alteration has been made to the stored resource, and the response can provide hypertext links to other related resources or collections of resources. When HTTP is used, as is most common, the operations (HTTP methods) available are GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS and TRACE.
 
-Additional practical information, news and tutorials can be found on the [Mainflux blog][blog].
 
-## Authors
-Main architect and BDFL of Mainflux project is [@drasko][drasko].
+### MQTT Broker
 
-Additionally, [@nmarcetic][nikola] and [@janko-isidorovic][janko] assured
-overall architecture and design, while [@manuio][manu] and [@darkodraskovic][darko]
-helped with crafting initial implementation and continiusly work on the project evolutions.
+The counterpart of the MQTT client is the MQTT broker. The broker is at the heart of any publish/subscribe protocol. Depending on the implementation, a broker can handle up to thousands of concurrently connected MQTT clients. The broker is responsible for receiving all messages, filtering the messages, determining who is subscribed to each message, and sending the message to these subscribed clients. The broker also holds the sessions of all persisted clients, including subscriptions and missed messages (more details). Another responsibility of the broker is the authentication and authorization of clients. Usually, the broker is extensible, which facilitates custom authentication, authorization, and integration into backend systems. Integration is particularly important because the broker is frequently the component that is directly exposed on the internet, handles a lot of clients, and needs to pass messages to downstream analyzing and processing systems.
 
-Besides them, Mainflux is constantly improved and actively
-developed by [@anovakovic01][alex], [@dusanb94][dusan], [@srados][sava],
-[@gsaleh][george], [@blokovi][iva], [@chombium][kole] and a large set of contributors.
 
-Maintainers are listed in [MAINTAINERS](MAINTAINERS) file.
+### MQTT adapter
 
-Mainflux team would like to give special thanks to [@mijicd][dejan] for his monumental work
-on designing and implementing highly improved and optimized version of the platform,
-and [@malidukica][dusanm] for his effort on implementing initial user interface.
+To send and receive messages over MQTT you could use Mosquitto tools, or Paho if you want to use MQTT over WebSocket.
 
-## Contributing
-Thank you for your interest in Mainflux and wish to contribute!
 
-1. Take a look at our [open issues](https://github.com/mainflux/mainflux/issues).
-2. Checkout the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.
-3. Make your changes compatible to our workflow.
+### Bootstrap
 
-### We're Hiring
-If you are interested in working professionally on Mainflux,
-please head to company's [careers page][careers] or shoot us an e-mail at <careers@mainflux.com>.
+Bootstrapping refers to a self-starting process that is supposed to proceed without external input. Mainflux platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when: - device contains only bootstrap credentials and no Mainflux credentials - device, for any reason, fails to start a communication with the configured Mainflux services (server not responding, authentication failure, etc..). - device, for any reason, wants to update its configuration
 
-Note that the best way to grab our attention is by sending PRs :sunglasses:.
+Bootstrapping and provisioning are two different procedures. Provisioning refers to entities management while bootstrapping is related to entity configuration.
 
-## Community
-- [Google group][forum]
-- [Gitter][gitter]
-- [Twitter][twitter]
+Bootstrapping procedure is the following:
 
-## License
-[Apache-2.0](LICENSE)
+Configure device 
 
-[banner]: https://github.com/mainflux/mainflux/blob/master/docs/img/gopherBanner.jpg
-[ci-badge]: https://semaphoreci.com/api/v1/mainflux/mainflux/branches/master/badge.svg
-[ci-url]: https://semaphoreci.com/mainflux/mainflux
-[docs]: http://mainflux.readthedocs.io
-[docker]: https://www.docker.com
-[forum]: https://groups.google.com/forum/#!forum/mainflux
-[gitter]: https://gitter.im/mainflux/mainflux?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
-[grc-badge]: https://goreportcard.com/badge/github.com/mainflux/mainflux
-[grc-url]: https://goreportcard.com/report/github.com/mainflux/mainflux
-[cov-badge]: https://codecov.io/gh/mainflux/mainflux/branch/master/graph/badge.svg
-[cov-url]: https://codecov.io/gh/mainflux/mainflux
-[license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
-[twitter]: https://twitter.com/mainflux
-[lora]: https://lora-alliance.org/
-[kubernetes]: https://kubernetes.io/
-[rel]: https://github.com/mainflux/mainflux/releases
-[careers]: https://www.mainflux.com/careers.html
-[lf]: https://www.linuxfoundation.org/
-[edgex]: https://www.edgexfoundry.org/
-[company]: https://www.mainflux.com/
-[blog]: https://medium.com/mainflux-iot-platform
-[drasko]: https://github.com/drasko
-[nikola]: https://github.com/nmarcetic
-[dejan]: https://github.com/mijicd
-[manu]: https://github.com/manuIO
-[darko]: https://github.com/darkodraskovic
-[janko]: https://github.com/janko-isidorovic
-[alex]: https://github.com/anovakovic01
-[dusan]: https://github.com/dusanb94
-[sava]: https://github.com/srados
-[george]: https://github.com/gesaleh
-[iva]: https://github.com/blokovi
-[kole]: https://github.com/chombium
-[dusanm]: https://github.com/malidukica
+1) Configure device with Bootstrap service URL, an external key and external ID
+
+Provision Mainflux channels Optionally create Mainflux channels if they don't exist
+
+Provision Mainflux things Optionally create Mainflux thing if it doesn't exist
+
+Upload configuration 
+
+2) Upload configuration for the Mainflux thing
+
+Bootstrap 
+
+3) Bootstrap - send a request for the configuration
+
+Update, enable/disable, remove 
+
+4) Connect/disconnect thing from channels, update or remove configuration
+
+
+#### Configuration
+
+The configuration of Mainflux thing consists of three major parts:
+
+<ul>
+<li>The list of Mainflux channels the thing is connected to</li>
+<li>Custom configuration related to the specific thing</li>
+<li>Thing key and certificate data related to that thing</li>
+</ul>
+
+There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and Mainflux ID and Mainflux key are completely different concepts. External id and key are only used to authenticate a device that corresponds to the specific Mainflux thing during the bootstrapping procedure.
+
+
+### Provisioning
+
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things.
+
+
+#### Access control
+
+#### Provisioning things
+
+Create/delete/change name and so on
+
+#### Provisioning applications
+
+Create/delete/change name and so on
+
+
+### NATS
+
+NATS was built to meet the distributed computing needs of today and tomorrow. NATS is simple and secure messaging made for developers and operators who want to spend more time developing modern applications and services than worrying about a distributed communication system.
+
+<ul>
+<li>Easy to use for developers and operators</li>
+<li>High-Performance</li>
+<li>Always on and available</li>
+<li>Extremely lightweight</li>
+<li>At Most Once and At Least Once Delivery</li>
+<li>Support for Observable and Scalable Services and Event/Data Streams</li>
+<li>Client support for over 30 different programming languages</li>
+<li>Cloud Native, a CNCF project with Kubernetes and Prometheus integrations</li>
+</ul>
+
+
+### Influxdb
+
+InfluxDB is the open source time series database that is part of the TICK (Telegraf, InfluxDB, Chronograf, Kapacitor) stack.
+
+InfluxDB is a high-performance data store written specifically for time series data. It allows for high throughput ingest, compression and real-time querying. InfluxDB is written entirely in Go and compiles into a single binary with no external dependencies. It provides write and query capabilities with a command-line interface, a built-in HTTP API, a set of client libraries (e.g., Go, Java, and JavaScript) and plugins for common data formats such as Telegraf, Graphite, Collectd and OpenTSDB.
+
+InfluxDB works with InfluxQL, a SQL-like query language for interacting with data. It has been lovingly crafted to feel familiar to those coming from other SQL or SQL-like environments while also providing features specific to storing and analyzing time series data. InfluxQL supports regular expressions, arithmetic expressions, and time series-specific functions to speed up data processing.
+
+
+## Faceplate
+
+Faceplate is used to develop a human-machine interface, through which the operator controls the technological processes performing at the control object. The operator’s workplace can be a personal computer, a tablet or a smartphone. The systems for developing a human-machine interface are often called SCADA systems.
+
+In general, the process of developing a ‘scada’ system using Faceplate, can be represented in the form of the following steps:
+    <ul>
+   <li>Creating a logical structure of the project, the definition of controlled points - tags. (see <a href="http://docs.faceplate.io:3000/docs/en/work_with_tags">Tag editor</a> ).</li>
+   <li>Creating mnemonics (see <a href="http://docs.faceplate.io:3000/docs/en/graph_redactor">Graphic editor</a>)</li>
+   <li>Creating connections to controllers and defining of the bindings (see <a href="http://docs.faceplate.io:3000/docs/en/connection">Соnnections</a> )</li>
+   <li>Configuring the messages system (see <a href="http://docs.faceplate.io:3000/docs/en/sms_system">Messages system</a> ).</li>
+   <li> Configuring the archiving system (see <a href="http://docs.faceplate.io:3000/docs/en/archive_system">Archiving System</a> ).</li>
+   </ul>
+
+In systems where the object is controlled by more than one operator, which may have different levels of access to the object, the access rights of operators are set up (see [User rights management](http://docs.faceplate.io:3000/docs/en/user_rules_control) ).
+
+For systems where hot backup and/or participation of several servers is required, the servers connected to the system are configured, and functions are distributed between them (see [Configuring servers](http://docs.faceplate.io:3000/docs/en/server_config) ).
+
+The reporting forms setting up that allow to aggregate the various activated information in an easy-to-read form, are performed using the [Report Editor](ttp://docs.faceplate.io:3000/docs/en/red_of_rep) .
+
+The development of additional software modules, executed by the server in runtime mode, is performed using the [Script Editor](http://docs.faceplate.io:3000/docs/en/red_of_sripts) .
+
+Faceplate can be used to process in real-time mode the video streams, coming from video cameras. The subsystem allows to broadcast a video stream to mnemonic diagrams, as well as to determine the movement appearance and the reaction to it. See [Working with video](http://docs.faceplate.io/docs/en/work_with_video).
+
+Support of multilingual interfaces is described in the section Development of multilanguage projects.
+
+## Tensorflow serving APP
+
+### TensorFlow Serving
+
+TensorFlow Serving is a flexible, high-performance serving system for machine learning models, designed for production environments. TensorFlow Serving makes it easy to deploy new algorithms and experiments, while keeping the same server architecture and APIs. TensorFlow Serving provides out-of-the-box integration with TensorFlow models, but can be easily extended to serve other types of models and data.
+
+Detailed developer documentation on TensorFlow Serving is available:
+
+<ul>
+<li>[Architecture Overview](https://www.tensorflow.org/tfx/serving/architecture)</li>
+<li>[Server API](https://www.tensorflow.org/tfx/serving/api_docs/cc/)</li>
+<li>[REST Client API](https://www.tensorflow.org/tfx/serving/api_rest)</li>
+</ul>
+
+### Protobuf
+
+Protocol Buffers (Protobuf) is a method of [serializing](https://en.wikipedia.org/wiki/Serialization) structured data. It is useful in developing programs to communicate with each other over a wire or for storing data. The method involves an [interface description language](https://en.wikipedia.org/wiki/Interface_description_language) that describes the structure of some data and a program that generates source code from that description for generating or parsing a stream of bytes that represents the structured data.
+
+[Google](https://en.wikipedia.org/wiki/Google) developed Protocol Buffers for use internally and has provided a [code generator](https://en.wikipedia.org/wiki/Code_generation_(compiler)) for multiple languages under an [open source](https://en.wikipedia.org/wiki/Open_source_software) license.
+
+### TFS MQTTT Agent
+
+If I choose a second option, I need an additional component — Web server to host TensorFlow Serving client. I will use sample GAN model that hosted by a TensorFlow server in a Docker container as backend. I will create a simple Flask application with TensorFlow client and dockerize it. For convenience the application will provide Swagger documentation for our simple REST API.
+Our REST API will have a single resource prediction with a single operation POST on it. It expects an image as an input parameter and returns JSON object with 3 most probable digits and their probabilities for Street View House Numbers. Here I extracted a couple of images for tests.
+
+We have created a Web application that provides public REST API for Street View House Numbers prediction. This is a Flask web application that is, effectively, an adapter of TensorFlow Serving capabilities. It hosts TensorFlow Serving client, transforms HTTP(S) REST requests into protobufs and forwards them to a TensorFlow Serving server via gRPC. TensorFlow server, in its turn, host a GAN model, which do, actually, a prediction job.
+
+Introduced architecture benefits from using of an effective communication (gRPC + protobufs) between internal services and exposes a public REST API for external use.
+
+
+
+## Keycloak
+
+Keycloak is an open source Identity and Access Management solution aimed at modern applications and services. It makes it easy to secure applications and services with little to no code.
+
+This page gives a brief introduction to Keycloak and some of the features. For a full list of features refer to the documentation.
+
+Trying Keycloak is quick and easy. Take a look at the Getting Started tutorial for details.
+
+Users authenticate with Keycloak rather than individual applications. This means that your applications don't have to deal with login forms, authenticating users, and storing users. Once logged-in to Keycloak, users don't have to login again to access a different application.
+
+Through the admin console administrators can centrally manage all aspects of the Keycloak server.
+
+
+### Chronograf
+
+Chronograf is InfluxData’s open source web application. Use Chronograf with the other components of the TICK stack to visualize your monitoring data and easily create alerting and automation rules.
+
+### Key features
+
+#### Infrastructure monitoring
+
+* View all hosts and their statuses in your infrastructure
+* View the configured applications on each host
+* Monitor your applications with Chronograf’s pre-created dashboards
+
+#### Alert management
+
+Chronograf offers a UI for Kapacitor, InfluxData’s data processing framework for creating alerts, running ETL jobs, and detecting anomalies in your data.
+
+* Generate threshold, relative, and deadman alerts on your data
+* Easily enable and disable existing alert rules
+* View all active alerts on an alert dashboard
+* Send alerts to the supported event handlers, including Slack, PagerDuty, HipChat, and more
+
+#### Data visualization
+
+* Monitor your application data with Chronograf’s pre-created dashboards
+* Create your own customized dashboards complete with various graph types and template variables
+* Investigate your data with Chronograf’s data explorer and query templates
+
+#### Database management
+
+* Create and delete databases and retention policies
+* View currently-running queries and stop inefficient queries from overloading your system
+* Create, delete, and assign permissions to users (Chronograf supports InfluxDB OSS and InfluxEnterprise user management)
+
+#### Multi-organization and multi-user support
+
+* Create organizations and assign users to those organizations
+* Restrict access to administrative functions
+* Allow users to set up and maintain unique dashboards for their organizations
+
+
+## Mainflux Admin Panel
+
+The administrative panel (AP) is designed for convenient management of Things, Channels and Users Mainflux. The AP is an interface and API (through which it interacts with Mainflux and Bootstrap). The main task of the AP is to configure for certain types of devices, for their further work with Bootstrap.
+The Mainflux Admin Panel will work with the OIDC Keycloak provider to distribute AP users by organization (only members of one organization can view the configuration for devices belonging to there organization).
+
+
+# Functional description
+
+Tellen Edge can transmit and receive data from most of the industrial sources that include: sensors, Programmable Logic Controllers, SCADA/ICS systems, MES systems and corporate EAM (Enterprise Asset Management) systems. Depending on the configuration,  data can be transmitted directly to Tellee or via Telle Edge.
+
+Telle’s architecture is based on the microservices ideology that enables a secure and easily scalable environment for data processing and comprehensive analysis. One of Telle’s strongest assets is the proactive approach to emergencies and process alarms that’s in the core of the platform.
+
+Generally, this is the sequence of the platform’s operation:
+<ul>
+<li>Edge Connection- connect industrial equipment and other data sources</li>
+<li>Data processing- monitor data, visualize efficiency, analyze anomalies, perform predictive diagnostics</li>
+<li>Analysis and following action- manage and optimize the production process, increase KPI and OEE</li>
+<ul>
+
+![tellee1](/uploads/3e6adf4452e2023038d2eb3025783b68/tellee1.png)
+
+
+## TELLEE EDGE
+
+Telle Edge receives and transmits data to Tellee and allows integration of trained machine learning models into local systems for analysis of source information.
+Telle Edge supports various platforms and operating systems. It can operate on both ARM and Intel processors. Security is ensured by data encryption and token-based system that issues unique tokens to each edge device. 
+Support for industrial data protocols such as Modbus, Modbus TCP/IP, OPC DA, OPC UA.
+Telle edge is capable of buffering data and in case of a connection interruption, it will synchronize all the buffered data as soon as the connection is up again. 
+A variable schema for storage of structured or unstructured data. Tools for creation and configuration of connections to the equipment. Role-based authentication configuration at the Edge level. User authentication at the Edge level uses 128-bit password hashing algorithm.
+
+
+![tellee2](/uploads/f5a6a9697d7d3f4ad095faa2e6ed8046/tellee2.png)
+
+
+
+## TELLE λ (lambda) - Service
+
+Tellee is capable of forecasting equipment operation, providing all the necessary information regarding the technology process that is compiled from the PLC data. 
+
+Main stages of machine learning models integration
+
+<ul>
+<li>Assigning the objectives and conditions for models of successful operation</li>
+<li>Definition of metrics and criteria for conformance of models to real-life equipment</li>
+<li>Rating of data accessibility, processing of data</li>
+<li>Selection of type of models and methods of machine learning. Training and testing of models</li>
+<li>Deployment, support, update and if necessary retraining of models</li>
+</ul>
+
+
+![tellee3](/uploads/939a60ca63c0329aeafb9266b208d0f6/tellee3.png)
+
+
+reprocessing and trimmings of the data are crucial for the correct utilization of data for machine learning. Unprocessed data are often distorted and unreliable. Employing this kind of data during the building of models might lead to incorrect results. These steps are a part of the processing stage and often implicate the initial examination of data.
+
+Research of normal equipment operation patterns in comparison to abnormal operation and screening of features that define the model structure.
+
+Development of equipment operation model, design of infrastructure, classification of common factors, the combinations of various types of models, equipment failure probability forecasting. Research of possible way to deliver alarms that contain forecasted equipment failure possibility.
+
+Deployment of a trained model into production. Depending on a customer request, it can be deployed either in the cloud or at the edge device. Machine learning models are limited only to computational resources of a device they are deployed on and in some cases by the speed of data transfer.
+
+## Flash, UX/UI
+
+Telle Flash user interface provides industry-ready IoT visualization that allows event management without the need for any additional software.
+
+Flash’s Integrated toolkit allows users to monitor equipment operation, analyze anomalies and events. Machine Learning analytics provide predictive alarms that can help operating staff take preventive action to minimize the effects of abnormality early on. Moreover, users can dissect the abnormality in order to get to the root of the problem.
+
+Criticality analysis enables users to set their priorities in relation to the importance of enterprise assets
+
+User interface elements are optimized for long hour shifts. Operators can switch between dark and light themes depending on their preferences. Color palette is adjusted in a way that minimizes eye strain but at the same time delivers information efficiently.
+
+`FLash` was developed based on the open source project` Chronograf`. `Flash`, is a visualization environment for data coming from the` InfluxDB` database from the `Mainflux` stack. For Single-Sign-On (SSO), authentication, and user authorization, [OIDC Keycloak](https://www.keycloak.org/documentation.html) is integrated into `Flash`. The `Flash` graphical components are based on libraries:
+
+* D3 | [Home Page](https://d3js.org/), [Docs](https://github.com/d3/d3/wiki)
+* Predix UI | [Home Page](https://www.predix-ui.com/#/home), [Docs](https://docs.predix.io/en-US/content/platform/web_application_development/predix_ui/get-started-with-predix-ui-components)
+* Dygraphs | [Home Page](http://dygraphs.com/), [Docs](http://dygraphs.com/tutorial.html)
+
+![tellee4](/uploads/e3e98ae8c0c1dbb0118595280355423b/tellee4.png)
+
+
+
+## Bootstarping
+
+Bootstrapping refers to a self-starting process that is supposed to proceed without external input. 
+Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Tellee things. 
+
+The platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:
+<ul>
+<li>the device contains only bootstrap credentials and no Tellee credentials</li>
+<li>the device, for any reason, fails to start a communication with the configured services (server not responding, authentication failure, etc..).</li>
+<li>the device, for any reason, wants to update its configuration</li>
+</ul>
+
+
+![tellee5](/uploads/7be1c46c1f39609ef270084e14452f50/tellee5.png)
+
+
+## Installation
+
+Deployment of Influx services based on docker containers.
+**Detailed procedure to be provided**
+
+Tellee start procedure 
+**Detailed procedure to be provided**
+
