@@ -11,10 +11,6 @@ networks:
   docker_mainflux-base-net:
     external: true
 
-volumes:
-  mainflux-influxdb-volume:
-  mainflux-grafana-volume:
-
 services:
 
   influxdb:
@@ -29,8 +25,6 @@ services:
       - docker_mainflux-base-net
     ports:
       - 8086:8086
-    volumes:
-      - mainflux-influxdb-volume:/var/lib/influxdb
 
   influxdb-writer:
     image: mainflux/influxdb-writer:latest
@@ -64,5 +58,3 @@ services:
       - 3001:3000
     networks:
       - docker_mainflux-base-net
-    volumes:
-      - mainflux-grafana-volume:/var/lib/grafana

@@ -27,7 +27,7 @@ services:
     container_name: mainflux-nginx
     restart: on-failure
     volumes:
-      - ./nginx/nginx-${AUTH-key}.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf/:/etc/nginx/nginx.conf
       - ./ssl/authorization.js:/etc/nginx/authorization.js
       - ./ssl/certs/mainflux-server.crt:/etc/ssl/certs/mainflux-server.crt
       - ./ssl/certs/ca.crt:/etc/ssl/certs/ca.crt
@@ -63,7 +63,7 @@ services:
       - mainflux-users-db-volume:/var/lib/postgresql/data
 
   users:
-    image: mainflux/users:latest
+    image: rkrikbaev/users:0.8.0
     container_name: mainflux-users
     depends_on:
       - users-db
@@ -84,25 +84,6 @@ services:
       - 8180:8180
     networks:
       - mainflux-base-net
-
-#   keycloak-client:
-#     image: keycloak-client:latest
-#     container_name: mainflux-keycloak-client
-#     depends_on:
-#       - users-db
-#     restart: on-failure
-#     environment:
-#       MF_USERS_LOG_LEVEL: debug
-#       MF_USERS_DB_HOST: users-db
-#       MF_USERS_DB_PORT: 5432
-#       MF_USERS_DB_USER: mainflux
-#       MF_USERS_DB_PASS: mainflux
-#       MF_USERS_DB: users
-#       MF_USERS_SECRET: secret
-#     ports:
-#       - 8200:8200
-#     networks:
-#       - mainflux-base-net
 
   things-db:
     image: postgres:10.2-alpine
@@ -127,7 +108,7 @@ services:
       - mainflux-things-redis-volume:/data
 
   things:
-    image: mainflux/things:latest
+    image: rkrikbaev/things:0.8.0
     container_name: mainflux-things
     depends_on:
       - things-db
@@ -153,7 +134,7 @@ services:
       - mainflux-base-net
 
   normalizer:
-    image: mainflux/normalizer:latest
+    image: rkrikbaev/normalizer:0.8.0
     container_name: mainflux-normalizer
     restart: on-failure
     depends_on:
@@ -169,17 +150,8 @@ services:
     networks:
       - mainflux-base-net
 
-  #ui:
-  #  image: mainflux/ui:latest
-  #  container_name: mainflux-ui
-  #  restart: on-failure
-  #  ports:
-  #    - 3000:3000
-  #  networks:
-  #    - mainflux-base-net
-
   ws-adapter:
-    image: mainflux/ws:latest
+    image: rkrikbaev/ws:0.8.0
     container_name: mainflux-ws
     depends_on:
       - things
@@ -196,7 +168,7 @@ services:
       - mainflux-base-net
 
   http-adapter:
-    image: mainflux/http:latest
+    image: rkrikbaev/http:0.8.0
     container_name: mainflux-http
     depends_on:
       - things
@@ -233,7 +205,7 @@ services:
       - mainflux-mqtt-redis-volume:/data
 
   mqtt-adapter:
-    image: mainflux/mqtt:latest
+    image: rkrikbaev/mqtt:0.8.0
     container_name: mainflux-mqtt
     depends_on:
       - things
@@ -255,23 +227,6 @@ services:
     networks:
       - mainflux-base-net
 
-  coap-adapter:
-    image: mainflux/coap:latest
-    container_name: mainflux-coap
-    depends_on:
-      - things
-      - nats
-    restart: on-failure
-    environment:
-      MF_COAP_ADAPTER_LOG_LEVEL: debug
-      MF_COAP_ADAPTER_PORT: 5683
-      MF_NATS_URL: nats://nats:4222
-      MF_THINGS_URL: things:8183
-    ports:
-      - 5683:5683/udp
-    networks:
-      - mainflux-base-net
-
   bootstrap-db:
     image: postgres:10.2-alpine
     container_name: mainflux-bootstrap-db
@@ -286,7 +241,7 @@ services:
       - mainflux-bootstrap-db-volume:/var/lib/postgresql/data
 
   bootstrap:
-    image: mainflux/bootstrap:latest
+    image: rkrikbaev/bootstrap:0.8.0
     container_name: mainflux-bootstrap
     depends_on:
       - bootstrap-db
@@ -302,7 +257,7 @@ services:
       MF_BOOTSTRAP_DB: bootstrap
       MF_BOOTSTRAP_DB_SSL_MODE: disable
       MF_BOOTSTRAP_PORT: 8200
-      MF_SDK_BASE_URL: http://mainflux-things:8182
+      MF_SDK_BASE_URL: http://things:8182
       MF_USERS_URL: mainflux-users:8181
       MF_THINGS_ES_URL: es-redis:6379
       MF_BOOTSTRAP_ES_URL: es-redis:6379
@@ -311,7 +266,7 @@ services:
 
 
   influxdb-reader:
-    image: mainflux/influxdb-reader:latest
+    image: rkrikbaev/influxdb-reader:0.8.0
     container_name: mainflux-influxdb-reader
     restart: on-failure
     environment:
@@ -344,7 +299,7 @@ services:
       - mainflux-influxdb-volume:/var/lib/influxdb
 
   influxdb-writer:
-    image: mainflux/influxdb-writer:latest
+    image: rkrikbaev/influxdb-writer:0.8.0
     container_name: mainflux-influxdb-writer
     depends_on:
       - influxdb
@@ -367,48 +322,82 @@ services:
     volumes:
       - ./channels.toml:/config/channels.toml
 
-  ui-interface:
-    container_name: ui-interface
+  admin-panel:
+    container_name: admin-panel
     restart: on-failure
     build:
-      context: ../mainflux_admin/client
+      context: ../tellee-admin-panel/client
       dockerfile: ./Dockerfile
+    image: rkrikbaev/admin-panel:latest
     ports:
       - "8000:8000"
     networks:
       - mainflux-base-net
     links:
-      - ui-api
+      - admin-panel-api
+    environment:  
+      REACT_APP_EXPRESS_HOST: http://admin-panel-api:5000
+      REACT_APP_MAINFLUX_USER: zeinetsse10@email.com
+      REACT_APP_CHANNEL_NAME: global_channel
+      FLASK_URL: tellee-ml:3300
 
-  ui-api:
-    container_name: ui-api
+  admin-panel-api:
+    container_name: admin-panel-api
     restart: on-failure
     build:
-      context: ../mainflux_admin/
+      context: ../tellee-admin-panel/
       dockerfile: ./Dockerfile
+    image: rkrikbaev/admin-panel-api:latest
     ports:
       - "5000:5000"
     depends_on:
-      - ui-db
+      - admin-panel-db
     networks:
       - mainflux-base-net
     links:
-      - ui-db
+      - admin-panel-db
       - nginx
       - bootstrap
     environment:
-      WAIT_HOSTS: ui-db:27017
-      DATABASE_URL: mongodb://ui-db:27017/mainflux_admin
+      WAIT_HOSTS: admin-panel-db:27017
+      DATABASE_URL: mongodb://admin-panel-db:27017/mainflux_admin
       MAINFLUX_URL: nginx
       BOOTSTRAP_URL: bootstrap:8200
-      UI_URL: ui-interface:8000
+      UI_URL: admin-panel:8000
 
-  ui-db:
-    container_name: ui-mongodb
+  admin-panel-db:
+    container_name: admin-panel-mongodb
     image: mongo
     restart: always
     volumes:
       - ./data-node:/data/db
     command: mongod
+    networks:
+      - mainflux-base-net
+  
+  user-ui:
+    container_name: user-ui
+    image: rkrikbaev/grafana-with-plugins:latest
+    restart: on-failure
+    user: "0"
+    links:
+      - influxdb
+    volumes:
+    # Data persistency
+    # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
+      - /srv/docker/grafana/data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - mainflux-base-net
+      
+  tellee-ml:
+    container_name: tellee-ml
+    image: rkrikbaev/telle-ml
+    restart: on-failure
+    volumes:
+      - ../tellee/data:/app/data
+    ports:
+      - "3300:3300"
     networks:
       - mainflux-base-net

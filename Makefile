@@ -4,50 +4,49 @@
 ## SPDX-License-Identifier: Apache-2.0
 
 BUILD_DIR = build
-SERVICES = users things http normalizer ws coap lora influxdb-writer influxdb-reader mongodb-writer mongodb-reader cassandra-writer cassandra-reader cli bootstrap
+SERVICES = users things http normalizer ws lora influxdb-writer influxdb-reader cli bootstrap
 DOCKERS = $(addprefix docker_,$(SERVICES))
 DOCKERS_DEV = $(addprefix docker_dev_,$(SERVICES))
 CGO_ENABLED ?= 0
+GOOS ?= linux
 
 define compile_service
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) go build -ldflags "-s -w" -o ${BUILD_DIR}/mainflux-$(1) cmd/$(1)/main.go
 endef
 
 define make_docker
-	docker build --no-cache --build-arg SVC_NAME=$(subst docker_,,$(1)) --tag=mainflux/$(subst docker_,,$(1)) -f docker/Dockerfile .
+	docker build --no-cache --build-arg SVC_NAME=$(subst docker_,,$(1)) --tag=rkrikbaev/$(subst docker_,,$(1)) -f docker/Dockerfile .
 endef
 
 define make_docker_dev
-	docker build --build-arg SVC_NAME=$(subst docker_dev_,,$(1)) --tag=mainflux/$(subst docker_dev_,,$(1)) -f docker/Dockerfile.dev ./build
+	docker build --build-arg SVC_NAME=$(subst docker_dev_,,$(1)) --tag=rkrikbaev/$(subst docker_dev_,,$(1)) -f docker/Dockerfile.dev ./build
 endef
 
 all: $(SERVICES) mqtt
 
-.PHONY: all $(SERVICES) dockers dockers_dev latest release mqtt ui
+.PHONY: all $(SERVICES) dockers dockers_dev latest release mqtt
 
 clean:
 	rm -rf ${BUILD_DIR}
 	rm -rf mqtt/node_modules
 
-cleandocker:
+cleandocker: cleanghost
 	# Stop all containers (if running)
 	docker-compose -f docker/docker-compose.yml stop
 	# Remove mainflux containers
 	docker ps -f name=mainflux -aq | xargs -r docker rm
-
-	# Remove exited containers
-	docker ps -f name=mainflux -f status=dead -f status=exited -aq | xargs -r docker rm -v
-
-	# Remove unused images
-	docker images "mainflux\/*" -f dangling=true -q | xargs -r docker rmi
-
 	# Remove old mainflux images
 	docker images -q mainflux\/* | xargs -r docker rmi
 
-ifdef pv
+# Clean ghost docker images
+cleanghost:
+	# Remove exited containers
+	docker ps -f status=dead -f status=exited -aq | xargs -r docker rm -v
+	# Remove unused images
+	docker images -f dangling=true -q | xargs -r docker rmi
 	# Remove unused volumes
-	docker volume ls -f name=mainflux -f dangling=true -q | xargs -r docker volume rm
-endif
+	docker volume ls -f dangling=true -q | xargs -r docker volume rm
+
 install:
 	cp ${BUILD_DIR}/* $(GOBIN)
 
@@ -63,32 +62,33 @@ $(SERVICES):
 $(DOCKERS):
 	$(call make_docker,$(@))
 
-docker_ui:
-	$(MAKE) -C ui docker
+#docker_ui:
+#	$(MAKE) -C ui docker
 
 docker_mqtt:
 	# MQTT Docker build must be done from root dir because it copies .proto files
-	docker build --tag=mainflux/mqtt -f mqtt/Dockerfile .
+	docker build --tag=rkrikbaev/mqtt -f mqtt/Dockerfile .
 
-dockers: $(DOCKERS) docker_ui docker_mqtt
+dockers: $(DOCKERS) docker_mqtt 
+# docker_ui
 
 $(DOCKERS_DEV):
 	$(call make_docker_dev,$(@))
 
 dockers_dev: $(DOCKERS_DEV)
 
-ui:
-	$(MAKE) -C ui
+#ui:
+#	$(MAKE) -C ui
 
 mqtt:
 	cd mqtt && npm install
 
 define docker_push
 	for svc in $(SERVICES); do \
-		docker push mainflux/$$svc:$(1); \
+		docker push rkrikbaev/$$svc:$(1); \
 	done
-	docker push mainflux/ui:$(1)
-	docker push mainflux/mqtt:$(1)
+#	docker push rkrikbaev/ui:$(1)
+	docker push rkrikbaev/mqtt:$(1)
 endef
 
 changelog:
@@ -102,10 +102,10 @@ release:
 	git checkout $(version)
 	$(MAKE) dockers
 	for svc in $(SERVICES); do \
-		docker tag mainflux/$$svc mainflux/$$svc:$(version); \
+		docker tag rkrikbaev/$$svc rkrikbaev/$$svc:$(version); \
 	done
-	docker tag mainflux/ui mainflux/ui:$(version)
-	docker tag mainflux/mqtt mainflux/mqtt:$(version)
+#	docker tag rkrikbaev/ui rkrikbaev/ui:$(version)
+	docker tag rkrikbaev/mqtt rkrikbaev/mqtt:$(version)
 	$(call docker_push,$(version))
 
 rundev:
@@ -113,9 +113,11 @@ rundev:
 
 run:
 	docker-compose -f docker/docker-compose.yml up
-
-runui:
-	$(MAKE) -C ui run
+restart:
+	docker-compose -f docker/docker-compose.yml down
+	docker-compose -f docker/docker-compose.yml up
+#runui:
+#	$(MAKE) -C ui run
 
 runlora:
 	docker-compose -f docker/docker-compose.yml up -d
